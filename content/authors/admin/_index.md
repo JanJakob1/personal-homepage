@@ -52,7 +52,7 @@ interests:
   - Information Retrieval
 
 education:
-  - area: MEng Artificial Intelligence
+  - area: BSc Mathematics
     institution: Massachusetts Institute of Technology
     date_start: 2016-01-01
     date_end: 2020-12-31
@@ -63,9 +63,20 @@ education:
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - area: BSc Artificial Intelligence
+  - area: Honours Degree in Technology Management
     institution: Massachusetts Institute of Technology
     date_start: 2016-01-01
+    date_end: 2020-12-31
+    summary: |
+      GPA: 3.8/4.0
+
+      Courses included:
+      - lorem ipsum dolor sit amet, consectetur adipiscing elit
+      - lorem ipsum dolor sit amet, consectetur adipiscing elit
+      - lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - area: BSc Mathematics
+    institution: LMU Munich
+    date_start: 2023-01-01
     date_end: 2020-12-31
     summary: |
       GPA: 3.4/4.0
@@ -74,7 +85,7 @@ education:
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
-   - area: B.Sc. Physics
+   - area: BSc Physics
     institution: Heidelberg University
     date_start: 2018-10-01
     date_end: 2022-12-31
