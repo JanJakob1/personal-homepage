@@ -20,7 +20,7 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Undergraduate Student
+#role: Undergraduate Student
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
@@ -31,20 +31,20 @@ organizations:
 # Need to use another icon? Simply download the SVG icon to your `assets/media/icons/` folder.
 profiles:
   - icon: at-symbol
-    url: 'mailto:your-email@example.com'
+    url: 'mailto:jakob.jan@outlook.de'
     label: E-mail Me
-  - icon: brands/x
-    url: https://twitter.com/GetResearchDev
+  #- icon: brands/x
+  #  url: https://twitter.com/GetResearchDev
   - icon: brands/instagram
-    url: https://www.instagram.com/
+    url: https://www.instagram.com/jandelayjakob
   - icon: brands/github
-    url: https://github.com/gcushen
-  - icon: brands/linkedin
-    url: https://www.linkedin.com/
-  - icon: academicons/google-scholar
-    url: https://scholar.google.com/
-  - icon: academicons/orcid
-    url: https://orcid.org/
+    url: https://github.com/JanJakob1
+  #- icon: brands/linkedin
+  #  url: https://www.linkedin.com/
+  #- icon: academicons/google-scholar
+  #  url: https://scholar.google.com/
+  #- icon: academicons/orcid
+  #  url: https://orcid.org/
 
 interests:
   - Scientific Computing
@@ -197,4 +197,4 @@ awards:
 
 ## About Me
 
-I'm currently a Math undergraduate student at LMU Munich currently working on mathematical oncology. Next semester I finsih my degree at Heidelberg University with at ... Before that I graduated in Physics from Heidelberg University and co-founded the legal tech start-up Silberfluss (silberfluss.io). 
+I'm currently a Math undergraduate student at LMU Munich currently investigating mathematical oncology. Next semester I will finsih my degree at Heidelberg University with a thesis about that topic under the supervision of Prof. Vincent Heuveline at the [EMCL](https://emcl.iwr.uni-heidelberg.de/). Before that I graduated in Physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)). 
