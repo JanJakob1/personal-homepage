@@ -187,4 +187,4 @@ awards:
 
 ## About Me
 
-I'm currently a Math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis and scientific computing. Next semester I will finish my degree at Heidelberg University with a thesis about mathematical oncology on the example of Lnych snydrome under the supervision of Prof. Vincent Heuveline at the [EMCL](https://emcl.iwr.uni-heidelberg.de/). Before that I graduated in Physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)). 
+I'm currently a Math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis and scientific computing. Next semester I will finish my degree at Heidelberg University with a thesis about mathematical oncology on the example of Lynch snydrome under the supervision of Prof. Vincent Heuveline at the [EMCL](https://emcl.iwr.uni-heidelberg.de/). Before that I graduated in Physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)). 
