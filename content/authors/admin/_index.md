@@ -47,50 +47,51 @@ profiles:
     url: https://orcid.org/
 
 interests:
+  - Scientific Computing
+  - Quantum Technology
   - Artificial Intelligence
-  - Computational Linguistics
-  - Information Retrieval
 
 education:
   - area: BSc Mathematics
-    institution: Massachusetts Institute of Technology
+    institution: Heidelberg University
     date_start: 2016-01-01
     date_end: 2020-12-31
     summary: |
-      GPA: 3.8/4.0
+      Expected GPA: 1.4/4.0
 
       Courses included:
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
   - area: Honours Degree in Technology Management
-    institution: Massachusetts Institute of Technology
-    date_start: 2016-01-01
-    date_end: 2020-12-31
+    institution: Center for Digital Management and Technology (CDTM)
+    date_start: 2024-02-01
+    date_end: 2025-08-30
     summary: |
-      GPA: 3.8/4.0
+      GPA: 1.0/4.0
 
       Courses included:
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
+      - Trend Seminar
+      - LLM Elective
+      - Product Marketing Elective
+      - Visual Storytelling Elective
   - area: BSc Mathematics
     institution: LMU Munich
     date_start: 2023-01-01
     date_end: 2020-12-31
     summary: |
-      GPA: 3.4/4.0
       
       Courses included:
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
       - lorem ipsum dolor sit amet, consectetur adipiscing elit
-   - area: BSc Physics
+  - area: BSc Physics
     institution: Heidelberg University
     date_start: 2018-10-01
     date_end: 2022-12-31
     summary: |
-      Thesis on .... Supervised by [Prof Björn Malte Schäfer](https://example.com).
+      GPA: 1.2/4.0
+      Thesis on a novel inversion algorithm for weak gravitational lensing | Supervised by [Prof Björn Malte Schäfer](https://example.com).
     button:
       text: 'Read Thesis'
       url: 'https://example.com'
@@ -153,11 +154,13 @@ skills:
         icon: camera
 
 languages:
+  - name: German
+    percent: 100
   - name: English
     percent: 100
-  - name: Chinese
-    percent: 75
-  - name: Portuguese
+  - name: Spanish
+    percent: 25
+  - name: Romanian
     percent: 25
 
 # Awards.
