@@ -19,7 +19,7 @@ superuser: true
 # Highlight the author in author lists? (true/false)
 highlight_name: true
 
-Role/position/tagline
+# Role/position/tagline
 role: Math & Physics Student
 
 # Organizations/Affiliations to display in Biography blox
@@ -53,18 +53,17 @@ interests:
 
 education:
   - area: BSc Mathematics
-    institution: Heidelberg University
-    date_start: 2016-01-01
-    date_end: 2020-12-31
+    institution: LMU Munich
+    date_start: 2023-10-01
+    date_end: 2025-03-31
     summary: |
-      Expected GPA: 1.4/4.0
-
       Courses included:
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
+      - Advanced Functional Analysis
+      - Optimization
+      - Probability Theory
+      - Ordinary Differential Equations
   - area: Honours Degree in Technology Management
-    institution: Center for Digital Management and Technology (CDTM)
+    institution: Center for Digital Management and Technology ([CDTM](https://cdtm.com))
     date_start: 2024-02-01
     date_end: 2025-08-30
     summary: |
@@ -75,16 +74,6 @@ education:
       - LLM Elective
       - Product Marketing Elective
       - Visual Storytelling Elective
-  - area: BSc Mathematics
-    institution: LMU Munich
-    date_start: 2023-01-01
-    date_end: 2020-12-31
-    summary: |
-      
-      Courses included:
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      - lorem ipsum dolor sit amet, consectetur adipiscing elit
   - area: BSc Physics
     institution: Heidelberg University
     date_start: 2018-10-01
