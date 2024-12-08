@@ -1,9 +1,9 @@
 ---
 # Display name
-#title: Math & Physics Student
+title: Jan Jakob
 
 # Name pronunciation (optional)
-name_pronunciation: Jan Jakob
+#name_pronunciation: Jan Jakob
 
 # Full name (for SEO)
 first_name: Jan
@@ -63,7 +63,8 @@ education:
       - Probability Theory
       - Ordinary Differential Equations
   - area: Honours Degree in Technology Management
-    institution: Center for Digital Management and Technology ([CDTM](https://cdtm.com))
+    institution: Center for Digital Management and Technology (CDTM)
+    url: https://cdtm.com
     date_start: 2024-02-01
     date_end: 2025-08-30
     summary: |
@@ -186,4 +187,4 @@ awards:
 
 ## About Me
 
-I'm currently a Math undergraduate student at LMU Munich currently investigating mathematical oncology. Next semester I will finsih my degree at Heidelberg University with a thesis about that topic under the supervision of Prof. Vincent Heuveline at the [EMCL](https://emcl.iwr.uni-heidelberg.de/). Before that I graduated in Physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)). 
+I'm currently a Math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis and scientific computing. Next semester I will finish my degree at Heidelberg University with a thesis about mathematical oncology on the example of Lnych snydrome under the supervision of Prof. Vincent Heuveline at the [EMCL](https://emcl.iwr.uni-heidelberg.de/). Before that I graduated in Physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)). 
