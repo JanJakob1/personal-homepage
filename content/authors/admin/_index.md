@@ -1,6 +1,6 @@
 ---
 # Display name
-title: Math & Physics Student
+#title: Math & Physics Student
 
 # Name pronunciation (optional)
 name_pronunciation: Jan Jakob
@@ -19,8 +19,8 @@ superuser: true
 # Highlight the author in author lists? (true/false)
 highlight_name: true
 
-# Role/position/tagline
-#role: Undergraduate Student
+Role/position/tagline
+role: Math & Physics Student
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
