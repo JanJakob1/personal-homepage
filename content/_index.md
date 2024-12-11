@@ -19,12 +19,12 @@ sections:
       #  text: Download CV
       #  url: uploads/resume.pdf
     design:
-      css_class: blue
+      css_class: dark
       background:
         color: "#0f021f"
         image:
           # Add your image background to `assets/media/`.
-          filename: image.png
+          filename: background-image.png
           filters:
             brightness: 1.0
           size: cover
