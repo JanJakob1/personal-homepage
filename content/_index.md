@@ -67,7 +67,7 @@ sections:
   - block: collection
     id: talks
     content:
-      title: Seminar Talks
+      title: Overview of my Seminar Talks
       filters:
         folders:
           - event
