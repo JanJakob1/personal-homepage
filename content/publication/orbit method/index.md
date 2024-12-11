@@ -65,7 +65,7 @@ projects:
 slides: example
 ---
 
-This work was driven by a research project on weak gravitational lensing and became later my Bachelor thesis in Physics.
+This work was driven by a seminar about geometeric quantization hold by Prof. Gabriele Benedetti.
 
 <!-- {{% callout note %}}
 Create your slides in Markdown - click the *Slides* button to check out the example.
