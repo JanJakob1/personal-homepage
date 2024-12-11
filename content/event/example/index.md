@@ -1,10 +1,10 @@
 ---
-title: Example Talk
+title: Max-Flow-Min-Cut Theorem
 
-event: Hugo Blox Builder Conference
-event_url: https://example.org
+event: Seminar about combinatorial optimization
+#event_url: https://example.org
 
-location: Hugo Blox Builder HQ
+location: Heidelberg University
 address:
   street: 450 Serra Mall
   city: Stanford
@@ -41,10 +41,10 @@ image:
 #    icon_pack: fab
 #    name: Follow
 #    url: https://twitter.com/georgecushen
-url_code: 'https://github.com'
-url_pdf: ''
-url_slides: 'https://slideshare.net'
-url_video: 'https://youtube.com'
+#url_code: 'https://github.com'
+#url_pdf: ''
+url_slides: ''
+#url_video: 'https://youtube.com'
 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.
