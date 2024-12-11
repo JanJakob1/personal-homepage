@@ -6,7 +6,7 @@ type: landing
 
 design:
   # Default section spacing
-  spacing: "4rem"
+  spacing: "2rem"
 
 sections:
   - block: resume-biography-3
@@ -44,6 +44,7 @@ sections:
   #     columns: '1'
   - block: collection
     id: papers
+    spacing: "6rem"
     content:
       title: Overview of my Thesis & Seminar Papers
       filters:
