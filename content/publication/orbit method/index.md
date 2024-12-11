@@ -11,19 +11,19 @@ publishDate: "2017-01-01T00:00:00Z"
 # Publication type.
 # Accepts a single type but formatted as a YAML list (for Hugo requirements).
 # Enter a publication type from the CSL standard.
-publication_types: ["article"]
+publication_types: ['paper-conference']
 
 # Publication name and optional abbreviated publication name.
 publication: ""
 publication_short: ""
 
-abstract: One of the challenges in weak gravitational lensing by galaxies and clusters is to infer the projected mass density distribution from the observable image ellipticities, which is known as inversion problem. In this thesis we derive a new inversion algorithm for weak gravitational lensing to reconstruct the deflection field out of the reduced shear, which is in principle observable from the image ellipticities. We propose both an algorithm for the planar case, i.e. for fields for which the flat sky approximation can be assumed, and an algorithm for the general (curved) case, i.e. for fields, where the curvature cannot be neglected and the flat-sky approximation loses its validity. Using a complex formalism we show that for the planar case the lens mapping is a quasi-conformal mapping with Beltrami coefficient given by the negative of the reduced shear. Our proposed algorithm then computes this quasi-conformal mapping with a finite element approach via a reduction to two elliptic PDEs. By introducing notions from quasi-conformal geometry like the Beltrami differential we generalize our inversion algorithm to curved fields by trying to describe the lens mapping as quasi-conformal mapping between appropriate Riemann surfaces. The lens mapping can then be computed with methods from computational quasi-conformal geometry. To the best of our knowledge, this is the first work which combines methods from quasi-conformal geometry with weak lensing in order to construct new inversion algorithms. We implemented and tested our proposed algorithm for planar fields with different source and lens configurations and compared it to the well-known KS 93 algorithm and its extension to the non-linear regime. However, the implementation of the algorithm for curved fields could not be done and will be the subject of further work.
+abstract: We present a
 
 # Summary. An optional shortened abstract.
-summary: A novel inversion algorithm for weak lensing using quasi-conformal geometry
+summary: The orbit method, developed by A.A. Kirillov, bridges representation theory and symplectic geometry, offering a geometric framework for constructing unitary representations of Lie groups. This paper explores the method's foundational concepts, focusing on coadjoint orbits as symplectic manifolds and their quantization via geometric quantization techniques. Unitary representations of specific groups, including SU(2) and the Heisenberg group, are derived, demonstrating the method's efficacy in linking geometric structures with harmonic analysis. Applications to various classes of Lie groups are discussed, highlighting the method's versatility and limitations. The orbit method emerges as both a conceptual and computational tool, offering insights into representation theory and quantum mechanics through a unified mathematical lens.
 
 tags:
-- Computational Astrophysics | Weak Gravitational Lensing
+- Geometric Quantization | Reprensentation Theory
 
 featured: true
 
