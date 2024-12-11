@@ -42,8 +42,8 @@ featured: true
 links:
 - name: Custom Link
   url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
-url_pdf: 
-  url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
+url_pdf: '#'
+#url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
 url_code: 'https://github.com/JanJakob1'
 
 # Featured image
