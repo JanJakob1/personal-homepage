@@ -1,8 +1,8 @@
 ---
-title: "An example preprint / working paper"
+title: "A novel inversion algorithm for weak lensing using quasi-conformal geometry"
 authors:
 - admin
-date: "2019-04-07T00:00:00Z"
+date: "2022-06-30T00:00:00Z"
 doi: ""
 
 # Schedule page publish date (NOT publication's date).
@@ -17,27 +17,39 @@ publication_types: ["article"]
 publication: ""
 publication_short: ""
 
-abstract: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.
+abstract: One of the challenges in weak gravitational lensing by galaxies and clusters is to infer the projected mass density distribution from the observable image ellipticities, which is known as inversion problem. In this thesis we derive a new inversion algorithm for weak gravitational lensing to reconstruct the deflection field out of the reduced shear, which is in principle observable from the image ellipticities. We propose both an algorithm for the planar case, i.e. for fields for which the flat sky approximation can be assumed, and an algorithm for the general (curved) case, i.e. for fields, where the curvature cannot be neglected and the flat-sky approximation loses its validity. Using a complex formalism we show that for the planar case the lens mapping is a quasi-conformal mapping with Beltrami coefficient given by the negative of the reduced shear. Our proposed algorithm then computes this quasi-conformal mapping with
+a finite element approach via a reduction to two elliptic PDEs. By introducing notions from quasi-conformal geometry like the Beltrami differential we generalize our inversion algorithm
+to curved fields by trying to describe the lens mapping as quasi-conformal mapping between appropriate Riemann surfaces. The lens mapping can then be computed with methods from
+computational quasi-conformal geometry. To the best of our knowledge, this is the first work which combines methods from quasi-conformal geometry with weak lensing in order to construct
+new inversion algorithms. We implemented and tested our proposed algorithm for planar fields with different source and lens configurations and compared it to the well-known KS 93 algorithm
+and its extension to the non-linear regime. However, the implementation of the algorithm for curved fields could not be done and will be the subject of further work.
 
 # Summary. An optional shortened abstract.
-summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum.
+summary: A novel inversion algorithm for weak lensing using quasi-conformal geometry
 
 tags:
-- Large Language Models
+- Computational Astrophysics | Weak Gravitational Lensing
 
 featured: true
 
+# links:
+# - name: Custom Link
+#   url: http://example.org
+# url_pdf: http://arxiv.org/pdf/1512.04133v1
+# url_code: 'https://github.com/HugoBlox/hugo-blox-builder'
+# url_dataset: '#'
+# url_poster: '#'
+# url_project: ''
+# url_slides: ''
+# url_source: '#'
+# url_video: '#'
+
 links:
 - name: Custom Link
-  url: http://example.org
-url_pdf: http://arxiv.org/pdf/1512.04133v1
-url_code: 'https://github.com/HugoBlox/hugo-blox-builder'
-url_dataset: '#'
-url_poster: '#'
-url_project: ''
-url_slides: ''
-url_source: '#'
-url_video: '#'
+  url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
+url_pdf: 
+  url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
+url_code: 'https://github.com/JanJakob1'
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder. 
