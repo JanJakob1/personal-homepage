@@ -1,5 +1,5 @@
 ---
-title: "Unitary Representations via The Orbit Method"
+title: "Unitary Representations via the Orbit Method"
 authors:
 - admin
 date: "2021-06-17T00:00:00Z"
