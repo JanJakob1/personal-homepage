@@ -1,8 +1,8 @@
 ---
-title: "A novel inversion algorithm for weak lensing using quasi-conformal geometry"
+title: "Unitary Representations via The Orbit Method"
 authors:
 - admin
-date: "2022-06-30T00:00:00Z"
+date: "2021-06-17T00:00:00Z"
 doi: ""
 
 # Schedule page publish date (NOT publication's date).
@@ -17,10 +17,10 @@ publication_types: ['paper-conference']
 publication: ""
 publication_short: ""
 
-abstract: We present a
+abstract: The orbit method, developed by A.A. Kirillov, bridges representation theory and symplectic geometry, offering a geometric framework for constructing unitary representations of Lie groups. This paper explores the method's foundational concepts, focusing on coadjoint orbits as symplectic manifolds and their quantization via geometric quantization techniques. Unitary representations of specific groups, including SU(2) and the Heisenberg group, are derived, demonstrating the method's efficacy in linking geometric structures with harmonic analysis. Applications to various classes of Lie groups are discussed, highlighting the method's versatility and limitations. The orbit method emerges as both a conceptual and computational tool, offering insights into representation theory and quantum mechanics through a unified mathematical lens.
 
 # Summary. An optional shortened abstract.
-summary: The orbit method, developed by A.A. Kirillov, bridges representation theory and symplectic geometry, offering a geometric framework for constructing unitary representations of Lie groups. This paper explores the method's foundational concepts, focusing on coadjoint orbits as symplectic manifolds and their quantization via geometric quantization techniques. Unitary representations of specific groups, including SU(2) and the Heisenberg group, are derived, demonstrating the method's efficacy in linking geometric structures with harmonic analysis. Applications to various classes of Lie groups are discussed, highlighting the method's versatility and limitations. The orbit method emerges as both a conceptual and computational tool, offering insights into representation theory and quantum mechanics through a unified mathematical lens.
+summary: shor one
 
 tags:
 - Geometric Quantization | Reprensentation Theory
