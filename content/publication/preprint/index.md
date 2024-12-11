@@ -11,7 +11,7 @@ publishDate: "2017-01-01T00:00:00Z"
 # Publication type.
 # Accepts a single type but formatted as a YAML list (for Hugo requirements).
 # Enter a publication type from the CSL standard.
-publication_types: ["article"]
+publication_types: ['paper-conference']
 
 # Publication name and optional abbreviated publication name.
 publication: ""
@@ -30,8 +30,8 @@ featured: true
 # links:
 # - name: Custom Link
 #   url: http://example.org
-# url_pdf: http://arxiv.org/pdf/1512.04133v1
-# url_code: 'https://github.com/HugoBlox/hugo-blox-builder'
+url_pdf: ''
+url_code: 'https://github.com/HugoBlox/hugo-blox-builder'
 # url_dataset: '#'
 # url_poster: '#'
 # url_project: ''
@@ -39,12 +39,12 @@ featured: true
 # url_source: '#'
 # url_video: '#'
 
-links:
-- name: Custom Link
-  url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
-url_pdf: '#'
+#links:
+#- name: Custom Link
+#  url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
+#url_pdf: '#'
 #url: uploads/Bachelor Thesis Physics Jan Jakob.pdf
-url_code: 'https://github.com/JanJakob1'
+#url_code: 'https://github.com/JanJakob1'
 
 # Featured image
 # To use, add an image named `featured.jpg/png` to your page's folder. 
