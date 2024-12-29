@@ -1,5 +1,5 @@
 ---
-title: "A novel inversion algorithm for weak lensing using quasi-conformal geometry"
+title: "A novel Inversion Algorithm for Weak Lensing using Quasi-Conformal Geometry"
 authors:
 - admin
 date: "2022-06-30T00:00:00Z"

@@ -20,7 +20,7 @@ publication_short: ""
 abstract: The orbit method, developed by A.A. Kirillov, bridges representation theory and symplectic geometry, offering a geometric framework for constructing unitary representations of Lie groups. This paper explores the method's foundational concepts, focusing on coadjoint orbits as symplectic manifolds and their quantization via geometric quantization techniques. Unitary representations of specific groups, including SU(2) and the Heisenberg group, are derived, demonstrating the method's efficacy in linking geometric structures with harmonic analysis. Applications to various classes of Lie groups are discussed, highlighting the method's versatility and limitations. The orbit method emerges as both a conceptual and computational tool, offering insights into representation theory and quantum mechanics through a unified mathematical lens.
 
 # Summary. An optional shortened abstract.
-summary: The orbit method unites representation theory and symplectic geometry by using coadjoint orbits to construct unitary representations of Lie groups, providing a powerful framework for understanding the connection between geometry, quantum mechanics, and harmonic analysis.
+summary: The orbit method uses coadjoint orbits to construct unitary representations of Lie groups, providing a powerful framework for understanding the connection between geometry, quantum mechanics, and harmonic analysis.
 
 tags:
 - Geometric Quantization | Reprensentation Theory
