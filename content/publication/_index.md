@@ -10,3 +10,7 @@ banner:
   caption: ''
   image: ''
 ---
+
+features:
+  math:
+    enable: true
