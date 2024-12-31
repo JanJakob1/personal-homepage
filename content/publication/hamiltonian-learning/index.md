@@ -31,7 +31,7 @@ featured: true
 # - name: Custom Link
 #   url: http://example.org
 # url_pdf: http://arxiv.org/pdf/1512.04133v1
-# url_code: 'https://github.com/HugoBlox/hugo-blox-builder'
+url_code: 'https://github.com/JanJakob1/hamiltonian-learning'
 # url_dataset: '#'
 # url_poster: '#'
 # url_project: ''
