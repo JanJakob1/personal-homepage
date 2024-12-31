@@ -23,7 +23,7 @@ abstract: The Hamiltonian Learning (HL) problem consists of the task of inferrin
 summary: In this project we are going to improve the Hamiltonian Learning problem of a many-body quantum system using Neural Differential Equations and classical shadows.
 
 tags:
-- Quantum Information Theory
+- Quantum Information Theory | Hamiltonian Learning
 
 featured: true
 

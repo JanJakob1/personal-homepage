@@ -34,8 +34,8 @@ featured: true
 # links:
 # - name: Custom Link
 #   url: http://example.org
-url_pdf: ''
-url_code: 'https://github.com/JanJakob1'
+#url_pdf: ''
+url_code: 'https://github.com/JanJakob1/weak-lensing'
 # url_dataset: '#'
 # url_poster: '#'
 # url_project: ''
