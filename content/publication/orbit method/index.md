@@ -65,7 +65,7 @@ projects:
 slides: example
 ---
 
-This work was driven by a seminar about geometeric quantization hold by Prof. Gabriele Benedetti.
+This work was driven by a seminar about geometeric quantization hold by [Prof. Gabriele Benedetti](https://research.vu.nl/en/persons/gabriele-benedetti).
 
 <!-- {{% callout note %}}
 Create your slides in Markdown - click the *Slides* button to check out the example.
