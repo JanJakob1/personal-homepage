@@ -23,7 +23,7 @@ abstract: The orbit method, developed by A.A. Kirillov, bridges representation t
 summary: The orbit method uses coadjoint orbits to construct unitary representations of Lie groups, providing a powerful framework for understanding the connection between geometry, quantum mechanics, and harmonic analysis.
 
 tags:
-- Geometric Quantization | Reprensentation Theory
+- Geometric Quantization | Group Theory
 
 featured: true
 
