@@ -30,7 +30,7 @@ featured: true
 
 # links:
 # - name: Custom Link
-#   url: http://example.org
+# url: http://example.org
 # url_code: ''
 # url_dataset: '#'
 # url_poster: '#'
