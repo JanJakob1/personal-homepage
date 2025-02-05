@@ -52,17 +52,7 @@ interests:
   - Software Engineering
 
 education:
-  - area: BSc Mathematics
-    institution: LMU Munich
-    date_start: 2023-10-01
-    date_end: 2025-03-31
-    summary: |
-      Courses included:
-      - Advanced Functional Analysis
-      - Optimization
-      - Probability Theory
-      - Ordinary Differential Equations
-  - area: Honours Degree in Technology Management
+  - area: Honors Degree in Technology Management
     institution: Center for Digital Management and Technology (CDTM)
     url: https://cdtm.com
     date_start: 2024-02-01
@@ -75,6 +65,16 @@ education:
       - LLM Elective
       - Product Marketing Elective
       - Visual Storytelling Elective
+  - area: BSc Mathematics
+    institution: LMU Munich
+    date_start: 2023-10-01
+    date_end: 2025-03-31
+    summary: |
+      Courses included:
+      - Advanced Functional Analysis
+      - Optimization
+      - Probability Theory
+      - Ordinary Differential Equations
   - area: BSc Physics
     institution: Heidelberg University
     date_start: 2018-10-01
@@ -186,4 +186,4 @@ awards:
 ---
 ## About Me
 
-I'm currently a Math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis and scientific machine learning. Before that I graduated in physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)).
+I'm currently a math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis and scientific machine learning. Before that I graduated in physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)).
