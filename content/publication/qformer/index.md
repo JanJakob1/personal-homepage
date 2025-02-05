@@ -24,7 +24,7 @@ abstract: The Hamiltonian Learning (HL) problem
 summary: In this project we are going to improve the Hamiltonian Learning problem of a many-body quantum system using Neural Differential Equations and classical shadows.
 
 tags:
-- Quantum Information Theory | Hamiltonian Learning
+- Scientific Machine Learning | Foundation Models for PDEs
 
 featured: true
 

@@ -186,4 +186,4 @@ awards:
 ---
 ## About Me
 
-I'm currently a math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis and scientific machine learning. Before that I graduated in physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)).
+I'm currently a math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis, group theory and scientific machine learning. Before that I graduated in physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)).
