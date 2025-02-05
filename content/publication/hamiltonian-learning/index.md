@@ -64,7 +64,7 @@ projects:
 slides: example
 ---
 
-This project is my first independent research project I started at the beginning of this on-going semester.
+This project is my first independent research project I started last October.
 
 <!-- {{% callout note %}}
 Create your slides in Markdown - click the *Slides* button to check out the example.

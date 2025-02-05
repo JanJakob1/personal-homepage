@@ -33,7 +33,7 @@ featured: true
 
 # links:
 # - name: Custom Link
-#   url: http://example.org
+url: 'https://arxiv.org/abs/2501.17157'
 url_pdf: 'https://arxiv.org/abs/2501.17157'
 url_code: 'https://github.com/JanJakob1/weak-lensing'
 # url_dataset: '#'
