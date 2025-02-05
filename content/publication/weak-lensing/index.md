@@ -2,11 +2,11 @@
 title: "A novel Inversion Algorithm for Weak Lensing using Quasi-Conformal Geometry"
 authors:
 - admin
-date: "2022-06-30T00:00:00Z"
+date: "2025-01-28T00:00:00Z"
 doi: ""
 
 # Schedule page publish date (NOT publication's date).
-publishDate: "2017-01-01T00:00:00Z"
+publishDate: "2025-01-028T00:00:00Z"
 
 # Publication type.
 # Accepts a single type but formatted as a YAML list (for Hugo requirements).
@@ -15,13 +15,13 @@ publishDate: "2017-01-01T00:00:00Z"
 # Legend: 0 = Uncategorized; 1 = Conference paper; 2 = Journal article;
 # 3 = Preprint / Working Paper; 4 = Report; 5 = Book; 6 = Book section;
 # 7 = Thesis; 8 = Patent
-publication_types: ['Bachelor Thesis in Physics']
+publication_types: ['Preprint']
 
 # Publication name and optional abbreviated publication name.
 publication: ""
 publication_short: ""
 
-abstract: One of the challenges in weak gravitational lensing by galaxies and clusters is to infer the projected mass density distribution from the observable image ellipticities, which is known as inversion problem. In this thesis we derive a new inversion algorithm for weak gravitational lensing to reconstruct the deflection field out of the reduced shear, which is in principle observable from the image ellipticities. We propose both an algorithm for the planar case, i.e. for fields for which the flat sky approximation can be assumed, and an algorithm for the general (curved) case, i.e. for fields, where the curvature cannot be neglected and the flat-sky approximation loses its validity. Using a complex formalism we show that for the planar case the lens mapping is a quasi-conformal mapping with Beltrami coefficient given by the negative of the reduced shear. Our proposed algorithm then computes this quasi-conformal mapping with a finite element approach via a reduction to two elliptic PDEs. By introducing notions from quasi-conformal geometry like the Beltrami differential we generalize our inversion algorithm to curved fields by trying to describe the lens mapping as quasi-conformal mapping between appropriate Riemann surfaces. The lens mapping can then be computed with methods from computational quasi-conformal geometry. To the best of our knowledge, this is the first work which combines methods from quasi-conformal geometry with weak lensing in order to construct new inversion algorithms. We implemented and tested our proposed algorithm for planar fields with different source and lens configurations and compared it to the well-known KS 93 algorithm and its extension to the non-linear regime. However, the implementation of the algorithm for curved fields could not be done and will be the subject of further work.
+abstract: One of the challenges in weak gravitational lensing by galaxies and clusters is to infer the projected mass density distribution from gravitational lensing measurements, which is known as inversion problem. We introduce a novel theoretical approach to solve the inversion problem. The cornerstone of the proposed method lies in a complex formalism that describes the lens mapping as quasi-conformal mapping with the Beltrami coefficient given by the negative of the reduced shear, which is, in principle, observable from the image ellipticities. We propose an algorithm called QCLens that is based on this complex formalism. QCLens computes the underlying quasi-conformal mapping with a finite element approach by reducing the problem to two elliptic partial differential equations solely depending on the reduced shear field. Experimental results for both the Schwarzschild and singular isothermal lens demonstrate the agreement of our proposed method with the analytically computable solutions.
 
 # Summary. An optional shortened abstract.
 summary: A novel inversion algorithm for weak lensing using quasi-conformal geometry
@@ -34,7 +34,7 @@ featured: true
 # links:
 # - name: Custom Link
 #   url: http://example.org
-#url_pdf: ''
+url_pdf: 'https://arxiv.org/abs/2501.17157'
 url_code: 'https://github.com/JanJakob1/weak-lensing'
 # url_dataset: '#'
 # url_poster: '#'
@@ -73,7 +73,7 @@ projects:
 slides: example
 ---
 
-This work was driven by a research project on weak gravitational lensing and became later my Bachelor thesis in Physics at Heidelberg University under the supervision of [Prof. Björn Malte Schäfer](https://www.ita.uni-heidelberg.de/~spirou/).
+This work was driven by a research project on weak gravitational lensing and later became my bachelor thesis in physics at Heidelberg University under the supervision of [Prof. Björn Malte Schäfer](https://www.ita.uni-heidelberg.de/~spirou/).
 
 <!-- {{% callout note %}}
 Create your slides in Markdown - click the *Slides* button to check out the example.
