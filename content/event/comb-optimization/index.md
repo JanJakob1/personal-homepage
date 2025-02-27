@@ -7,10 +7,10 @@ event: Seminar about combinatorial optimization
 location: Heidelberg University
 address:
   street: 450 Serra Mall
-  city: Stanford
-  region: CA
+  city: Heidelberg
+  region: Baden-Wuerttemberg
   postcode: '94305'
-  country: United States
+  country: Germany
 
 summary: An example talk using Hugo Blox Builder's Markdown slides feature.
 abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellusac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam.'
@@ -40,10 +40,10 @@ image:
 #  - icon: twitter
 #    icon_pack: fab
 #    name: Follow
-#    url: https://twitter.com/georgecushen
+#    url: https://twitter.com/georgestatcushen
 #url_code: 'https://github.com'
 #url_pdf: ''
-url_slides: ''
+url_slides: 'comp-optimization.pdf'
 #url_video: 'https://youtube.com'
 
 # Markdown Slides (optional).
@@ -51,7 +51,7 @@ url_slides: ''
 #   Simply enter your slide deck's filename without extension.
 #   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-slides: ""
+slides: 'static
 
 # Projects (optional).
 #   Associate this post with one or more of your projects.
