@@ -43,7 +43,7 @@ image:
 #    url: https://twitter.com/georgestatcushen
 #url_code: 'https://github.com'
 #url_pdf: ''
-url_slides: 'comp-optimization.pdf'
+url_slides: 'comp-optimization'
 #url_video: 'https://youtube.com'
 
 # Markdown Slides (optional).
