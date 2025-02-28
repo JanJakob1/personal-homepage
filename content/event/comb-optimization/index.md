@@ -17,7 +17,7 @@ abstract: 'The max-flow-min-cut theorem states that in a flow network, the maxim
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: '2021-05-30T'
+date: '2021-05-30T00:00:00Z'
 #date_end: '2021-05-30T15:00:00Z'
 all_day: false
 
