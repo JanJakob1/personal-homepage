@@ -43,7 +43,7 @@ image:
 #    url: https://twitter.com/georgestatcushen
 #url_code: 'https://github.com'
 #url_pdf: ''
-url_slides: 'comp-optimization'
+url_slides: 'static/comp-optimization.pdf'
 #url_video: 'https://youtube.com'
 
 # Markdown Slides (optional).
@@ -51,7 +51,7 @@ url_slides: 'comp-optimization'
 #   Simply enter your slide deck's filename without extension.
 #   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-slides: 'static'
+#slides: 'static/'
 
 # Projects (optional).
 #   Associate this post with one or more of your projects.
