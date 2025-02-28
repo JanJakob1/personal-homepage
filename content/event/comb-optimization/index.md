@@ -6,10 +6,10 @@ event: Seminar about combinatorial optimization
 
 location: Heidelberg University
 address:
-  street: 450 Serra Mall
+  #street: 450 Serra Mall
   city: Heidelberg
-  region: Baden-Wuerttemberg
-  postcode: '94305'
+  #region: Baden-Wuerttemberg
+  postcode: '69120'
   country: Germany
 
 summary: A seminar talk about the max-flow-min-cut theorem in combinatorial optimization.
@@ -58,8 +58,8 @@ slides: 'static'
 #   Simply enter your project's folder or file name without extension.
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
-projects:
-  - example
+#projects:
+#  - example
 ---
 
 {{% callout note %}}
