@@ -12,8 +12,8 @@ address:
   postcode: '94305'
   country: Germany
 
-summary: An example talk using Hugo Blox Builder's Markdown slides feature.
-abstract: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellusac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam.'
+summary: A seminar talk about the max-flow-min-cut theorem in combinatorial optimization.
+abstract: 'The max-flow-min-cut theorem states that in a flow network, the maximum amount of flow that can be sent from a source to a sink is equal to the total weight of the edges in the minimum cut separating the source from the sink. This fundamental theorem is crucial in network flow optimization problems.'
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
@@ -51,7 +51,7 @@ url_slides: 'comp-optimization.pdf'
 #   Simply enter your slide deck's filename without extension.
 #   E.g. `slides = "example-slides"` references `content/slides/example-slides.md`.
 #   Otherwise, set `slides = ""`.
-slides: 'static
+slides: 'static'
 
 # Projects (optional).
 #   Associate this post with one or more of your projects.
