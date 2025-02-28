@@ -7,17 +7,17 @@ event: Seminar about combinatorial optimization
 location: Heidelberg University
 address:
   #street: 450 Serra Mall
-  city: Heidelberg
+  #city: Heidelberg
   #region: Baden-Wuerttemberg
-  postcode: '69120'
-  country: Germany
+  #postcode: '69120'
+  #country: Germany
 
 summary: A seminar talk about the max-flow-min-cut theorem in combinatorial optimization.
 abstract: 'The max-flow-min-cut theorem states that in a flow network, the maximum amount of flow that can be sent from a source to a sink is equal to the total weight of the edges in the minimum cut separating the source from the sink. This fundamental theorem is crucial in network flow optimization problems.'
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: '2021-05-30T00:00:00Z'
+date: '2021-05-30T14:00:00Z'
 #date_end: '2021-05-30T15:00:00Z'
 all_day: false
 
@@ -61,7 +61,7 @@ url_pdf: ''
 #   Otherwise, set `projects = []`.
 #projects:
 #  - example
----
+<!-- ---
 
 {{% callout note %}}
 Click on the **Slides** button above to view the built-in slides feature.
@@ -73,4 +73,4 @@ Slides can be added in a few ways:
 - **Upload** an existing slide deck to `static/` and link using `url_slides` parameter in the front matter of the talk file
 - **Embed** your slides (e.g. Google Slides) or presentation video on this page using [shortcodes](https://docs.hugoblox.com/reference/markdown/).
 
-Further event details, including [page elements](https://docs.hugoblox.com/reference/markdown/) such as image galleries, can be added to the body of this page.
+Further event details, including [page elements](https://docs.hugoblox.com/reference/markdown/) such as image galleries, can be added to the body of this page. -->
