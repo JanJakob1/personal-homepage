@@ -20,12 +20,12 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Math & Physics Student
+role: Quantum Engineering Masters Student
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
-  - name: LMU Munich
-    url: https://www.lmu.de/en/
+  - name: ETH Zurich
+    url: https://www.ethz.ch
 
 # Social network links
 # Need to use another icon? Simply download the SVG icon to your `assets/media/icons/` folder.
@@ -47,11 +47,14 @@ profiles:
   #  url: https://orcid.org/
 
 interests:
-  - Scientific Computing
-  - Quantum Technology
+  - Scientific Machine Learning
+  - Quantum Engineering
   - Software Engineering
 
 education:
+  - area: Quantum Engineering
+    institution: ETH Zurich
+    date_start: 
   - area: Honors Degree in Technology Management
     institution: Center for Digital Management and Technology (CDTM)
     url: https://cdtm.com
@@ -66,7 +69,7 @@ education:
       - Product Marketing Elective
       - Visual Storytelling Elective
   - area: BSc Mathematics
-    institution: LMU Munich
+    institution: Heidelberg University, LMU Munich
     date_start: 2023-10-01
     date_end: 2025-03-31
     summary: |
@@ -186,4 +189,4 @@ awards:
 ---
 ## About Me
 
-I'm currently a math undergraduate student at LMU Munich sharpening my skills in advanced functional analysis, group theory and scientific machine learning. Before that I graduated in physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)).
+I'm currently a Master's student in Quantum Engineering at ETH. My academic interests lie in  scientific machine learning. Before that I graduated in physics from Heidelberg University and co-founded the legal tech start-up Silberfluss ([silberfluss.io](https://silberfluss.io)).
