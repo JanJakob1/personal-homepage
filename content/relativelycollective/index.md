@@ -1,5 +1,5 @@
 ---
-title: "Relativelycollective"
+title: "Relatively Collective"
 date: 2026-02-15
 type: landing
 

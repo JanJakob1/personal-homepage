@@ -190,4 +190,4 @@ awards:
 ## About Me
 
 I'm currently a Master's student in Quantum Engineering at ETH Zurich. My academic interests lie in quantum science and scientific machine learning. Before that I graduated in physics and mathematics from Heidelberg University with stints at LMU Munich. 
-Over the years, I also developed a deep passion for entrepreneurship and am the co-founder of the legal tech start-us Silberfluss ([silberfluss.io](https://silberfluss.io)) and Silvernova AI ([silvernova.ai](https://silvernova.ai).
+Over the years, I also developed a deep passion for entrepreneurship and am the co-founder of the legal tech start-us Silberfluss ([silberfluss.io](https://silberfluss.io)) and Silvernova AI ([silvernova.ai](https://silvernova.ai)).

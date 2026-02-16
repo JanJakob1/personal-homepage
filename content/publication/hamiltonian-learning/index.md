@@ -64,7 +64,7 @@ projects:
 slides: example
 ---
 
-This project is my first independent research project I started last October.
+This project is currently ongoing.
 
 <!-- {{% callout note %}}
 Create your slides in Markdown - click the *Slides* button to check out the example.
