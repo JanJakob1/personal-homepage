@@ -12,11 +12,7 @@ sections:
 
         <!-- OPTION A: YouTube / Vimeo Embed (ersetze VIDEO_ID) -->
         <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-          <iframe
-            src="https://www.youtube.com/embed/VIDEO_ID"
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
+          <iframe src="https://1drv.ms/v/c/6c321ea6ed88dcdf/IQRx-2VGHJrxR4EknhwXFoQSATPz2w-tMQBAH97FtW2uZKk" width="1920" height="1080" frameborder="0" scrolling="no" allowfullscreen>,
           </iframe>
         </div>
         </div>

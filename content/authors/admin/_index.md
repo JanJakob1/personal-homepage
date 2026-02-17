@@ -20,7 +20,7 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Quantum Engineering Masters Student
+role: MSc Quantum Engineering
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
@@ -52,7 +52,7 @@ interests:
   - Software Engineering
 
 education:
-  - area: Quantum Engineering
+  - area: MSc Quantum Engineering
     institution: ETH Zurich
     date_start: 
   - area: Honors Degree in Technology Management
