@@ -1,9 +1,8 @@
 ---
-title: "Operator Learning Using Random Features for
-Phase-Field Tumor Models"
+title: "Operator Learning Using Random Features for Phase-Field Tumor Models"
 authors:
 - admin
-date: "2025-01-28T00:00:00Z"
+date: "2025-08-23T00:00:00Z"
 doi: ""
 
 # Schedule page publish date (NOT publication's date).
@@ -74,7 +73,7 @@ projects:
 slides: example
 ---
 
-This work was carried out during my bachelor thesis in mathematics at the Engineering Mathematics and Computiung Lab (EMCL) at Heidelberg University under the supervision of [Prof. Vincent Heuveline](https://www.ita.uni-heidelberg.de/~spirou/).
+This work was carried out during my bachelor thesis in mathematics at the Engineering Mathematics and Computiung Lab (EMCL) at Heidelberg University under the supervision of [Prof. Vincent Heuveline](https://www.urz.uni-heidelberg.de/en/the-urz/organization/prof-dr-vincent-heuveline).
 
 <!-- {{% callout note %}}
 Create your slides in Markdown - click the *Slides* button to check out the example.

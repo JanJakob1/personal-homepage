@@ -8,16 +8,32 @@ sections:
     content:
       title: ""
       text: |
-        <div style="max-width: 960px; margin: 0 auto;">
-
-        <!-- OPTION A: YouTube / Vimeo Embed (ersetze VIDEO_ID) -->
-        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-          <iframe src="https://1drv.ms/v/c/6c321ea6ed88dcdf/IQRx-2VGHJrxR4EknhwXFoQSATPz2w-tMQBAH97FtW2uZKk" width="1920" height="1080" frameborder="0" scrolling="no" allowfullscreen>,
-          </iframe>
-        </div>
+        <style>
+          .fullscreen-video-embed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .fullscreen-video-embed iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+          }
+        </style>
+        <div class="fullscreen-video-embed">
+          <iframe src="https://1drv.ms/v/c/6c321ea6ed88dcdf/IQRx-2VGHJrxR4EknhwXFoQSATPz2w-tMQBAH97FtW2uZKk" allowfullscreen></iframe>
         </div>
     design:
       columns: '1'
       spacing:
-        padding: ['40px', '0', '40px', '0']
+        padding: ['0', '0', '0', '0']
 ---
