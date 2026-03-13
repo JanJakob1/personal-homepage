@@ -2,6 +2,18 @@
   command = "hugo --gc --minify -b $URL && npx pagefind --source 'public'"
   publish = "public"
 
+# Ensure /qubo/ and /hubo/ serve index.html (static subdirs)
+[[redirects]]
+  from = "/qubo/"
+  to = "/qubo/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/hubo/"
+  to = "/hubo/index.html"
+  status = 200
+  force = true
+
 [build.environment]
   HUGO_VERSION = "0.136.5"
   HUGO_ENABLEGITINFO = "true"
