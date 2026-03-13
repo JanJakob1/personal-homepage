@@ -677,16 +677,16 @@ const ROUTES = [
   { id:'A2t2', from:'koeln',     to:'juelich',   color:'#ffffff', dash:true,  cost:30,  label:'Cologne→Jülich A (arr 16:00)',             detail:'Follows A1_t2. Arrives Jülich 16:00 ✓ — within preferred window. No penalty.' },
   { id:'A4t1', from:'frankfurt', to:'juelich',   color:'#ffffff', dash:false, cost:120, label:'Frankfurt→Jülich A (arr 13:10)',           detail:'Follows A3_t1. Arrives Jülich 13:10 — just before window. Small soft penalty.' },
   { id:'A4t2', from:'frankfurt', to:'juelich',   color:'#ffffff', dash:true,  cost:120, label:'Frankfurt→Jülich A (arr 18:40)',           detail:'Follows A3_t2. Arrives Jülich 18:40 — after preferred window. Soft time window penalty.' },
-  { id:'B1t1', from:'muenchen',  to:'frankfurt', color:'#1a3a6b', dash:false, cost:210, label:'Munich→Frankfurt (dep 09:00, arr 12:30)', Detail:'Train B t1 direct: departs 09:00, arrives Frankfurt 12:30. Then can take B2_t1 (→Cologne, arr 15:30) or B6_t1 (→Jülich, arr 14:30).' },
-  { id:'B1t2', from:'muenchen',  to:'frankfurt', color:'#1a3a6b', dash:true,  cost:210, label:'Munich→Frankfurt (dep 13:00, arr 16:30)', Detail:'Train B t2 direct: departs 13:00, arrives Frankfurt 16:30. Continues to Jülich 18:30 — late, soft penalty.' },
+  { id:'B1t1', from:'muenchen',  to:'frankfurt', color:'#1a3a6b', dash:false, cost:210, label:'Munich→Frankfurt (dep 09:00, arr 12:30)', detail:'Train B t1 direct: departs 09:00, arrives Frankfurt 12:30. Then can take B2_t1 (→Cologne, arr 15:30) or B6_t1 (→Jülich, arr 14:30).' },
+  { id:'B1t2', from:'muenchen',  to:'frankfurt', color:'#1a3a6b', dash:true,  cost:210, label:'Munich→Frankfurt (dep 13:00, arr 16:30)', detail:'Train B t2 direct: departs 13:00, arrives Frankfurt 16:30. Continues to Jülich 18:30 — late, soft penalty.' },
   { id:'B2t1', from:'frankfurt', to:'koeln',     color:'#1a3a6b', dash:false, cost:90,  label:'Frankfurt→Cologne B (dep 12:30, arr 15:30)', detail:'⚠️ CONFLICT: departs Frankfurt 12:30, arrives Cologne 15:30. Exact same arrival as A1_t2! Hard Cologne bottleneck k=1 → cross-term Q[1,10].' },
   { id:'B2t2', from:'frankfurt', to:'koeln',     color:'#f47c5a', dash:true,  cost:90,  label:'Frankfurt→Cologne B ⛔ BLOCKED (afternoon)', detail:'MAINTENANCE BLOCK: Frankfurt→Cologne track closed all afternoon. x_B2_t2 = 0 hard enforced (λ→∞ on diagonal).' },
   { id:'B3t1', from:'koeln',     to:'juelich',   color:'#1a3a6b', dash:false, cost:30,  label:'Cologne→Jülich B (arr 16:00)',             detail:'Follows B2_t1. Arrives Jülich 16:00 ✓ — within preferred window. No penalty.' },
   { id:'B3t2', from:'koeln',     to:'juelich',   color:'#1a3a6b', dash:true,  cost:30,  label:'Cologne→Jülich B (arr late)',              detail:'Would follow B2_t2 — but B2_t2 is blocked. This variable is therefore also unreachable in practice.' },
   { id:'B4t1', from:'muenchen',  to:'nuernberg', color:'#1a3a6b', dash:true,  cost:70,  label:'Munich→Nuremberg (dep 09:00, arr 10:10)', detail:'Train B detour, segment 1. Arrives Nuremberg 10:10.' },
   { id:'B5t1', from:'nuernberg', to:'frankfurt', color:'#1a3a6b', dash:true,  cost:110, label:'Nuremberg→Frankfurt (dep 10:10, arr 12:00)', detail:'Segment 2. Arrives Frankfurt 12:00. Total Munich→Frankfurt = 180 min vs 210 min direct — but adds Nuremberg stop overhead.' },
-  { id:'B6t1', from:'frankfurt', to:'juelich',   color:'#1a3a6b', dash:false, cost:120, label:'Frankfurt→Jülich B direct (arr 14:30)',   detail:'Follows B1t1 (arr FRA 12:30) or B5t1 (arr FRA 12:00). Arrives Jülich 14:30 ✓ — preferred window.' },
-  { id:'B6t2', from:'frankfurt', to:'juelich',   color:'#1a3a6b', dash:true,  cost:120, label:'Frankfurt→Jülich B direct (arr 18:30)',   detail:'Follows B1t2 (arr FRA 16:30). Arrives Jülich 18:30 — late, soft time window penalty.' },
+  { id:'B6t1', from:'frankfurt', to:'juelich',   color:'#1a3a6b', dash:false, cost:120, label:'Frankfurt→Jülich B direct (arr 14:30)',   detail:'Follows B1_t1 (arr FRA 12:30) or B5_t1 (arr FRA 12:00). Arrives Jülich 14:30 ✓ — preferred window.' },
+  { id:'B6t2', from:'frankfurt', to:'juelich',   color:'#1a3a6b', dash:true,  cost:120, label:'Frankfurt→Jülich B direct (arr 18:30)',   detail:'Follows B1_t2 (arr FRA 16:30). Arrives Jülich 18:30 — late, soft time window penalty.' },
 ];
 
 /* ══════════ MAP ══════════ */
@@ -712,7 +712,442 @@ function showInfo({ type, title, vars, cost, costLabel, detail, color }) {
   info.classList.add('show');
 }
 
-/* ... Rest of page unchanged ... */
+/* Real rail corridor waypoints for each city-pair segment.
+   Coordinates traced along actual ICE/IR track corridors. */
+const RAIL_SEGMENTS = {
+  // Zürich → Cologne via Rhine valley (Zürich–Basel–Karlsruhe–Mainz–Koblenz–Cologne)
+  'zuerich-koeln': [
+    [47.376, 8.541],   // Zürich HB
+    [47.559, 7.589],   // Basel SBB
+    [48.003, 7.842],   // Freiburg im Breisgau
+    [48.694, 8.013],   // Offenburg
+    [48.994, 8.401],   // Karlsruhe
+    [49.873, 8.651],   // Darmstadt
+    [49.999, 8.274],   // Mainz
+    [50.359, 7.598],   // Koblenz
+    [50.631, 7.215],   // Remagen
+    [50.938, 6.960],   // Cologne
+  ],
+  // Zürich → Frankfurt (via Basel–Karlsruhe–Mannheim–Frankfurt)
+  'zuerich-frankfurt': [
+    [47.376, 8.541],   // Zürich HB
+    [47.559, 7.589],   // Basel SBB
+    [48.003, 7.842],   // Freiburg
+    [48.694, 8.013],   // Offenburg
+    [48.994, 8.401],   // Karlsruhe
+    [49.483, 8.470],   // Mannheim
+    [49.873, 8.651],   // Darmstadt
+    [50.110, 8.682],   // Frankfurt HBF
+  ],
+  // Cologne → Jülich (local line west)
+  'koeln-juelich': [
+    [50.938, 6.960],   // Cologne
+    [50.941, 6.774],   // Horrem
+    [50.933, 6.623],   // Kerpen-Sindorf
+    [50.922, 6.361],   // Jülich
+  ],
+  // Frankfurt → Jülich (via Cologne shortcut: FRA–Koblenz–Cologne–Jülich)
+  'frankfurt-juelich': [
+    [50.110, 8.682],   // Frankfurt
+    [50.011, 8.274],   // Mainz
+    [50.359, 7.598],   // Koblenz
+    [50.631, 7.215],   // Remagen
+    [50.938, 6.960],   // Cologne
+    [50.941, 6.774],   // Horrem
+    [50.922, 6.361],   // Jülich
+  ],
+  // Munich → Frankfurt (via Würzburg–Fulda–Frankfurt ICE)
+  'muenchen-frankfurt': [
+    [48.137, 11.576],  // Munich HBF
+    [48.558, 10.879],  // Augsburg
+    [49.301, 10.579],  // Ansbach (approximation)
+    [49.797, 9.936],   // Würzburg
+    [50.274, 9.683],   // Fulda
+    [50.110, 8.682],   // Frankfurt HBF
+  ],
+  // Frankfurt → Cologne (ICE Cologne–Frankfurt high-speed line)
+  'frankfurt-koeln': [
+    [50.110, 8.682],   // Frankfurt HBF
+    [50.370, 8.017],   // Limburg a.d. Lahn
+    [50.594, 7.226],   // Siegburg/Bonn
+    [50.938, 6.960],   // Cologne
+  ],
+  // Cologne → Jülich (same as above)
+  'koeln-juelich-b': [
+    [50.938, 6.960],
+    [50.941, 6.774],
+    [50.933, 6.623],
+    [50.922, 6.361],
+  ],
+  // Munich → Nuremberg (ICE/IC main line)
+  'muenchen-nuernberg': [
+    [48.137, 11.576],  // Munich HBF
+    [48.358, 11.780],  // Freising
+    [48.701, 11.429],  // Ingolstadt HBF
+    [49.185, 11.088],  // Nuremberg HBF (approach)
+    [49.453, 11.077],  // Nuremberg HBF
+  ],
+  // Nuremberg → Frankfurt (via Würzburg)
+  'nuernberg-frankfurt': [
+    [49.453, 11.077],  // Nuremberg HBF
+    [49.797, 9.936],   // Würzburg HBF
+    [50.274, 9.683],   // Fulda
+    [50.110, 8.682],   // Frankfurt HBF
+  ],
+  // Frankfurt → Jülich direct (via Cologne, same corridor)
+  'frankfurt-juelich-direct': [
+    [50.110, 8.682],
+    [50.011, 8.274],
+    [50.359, 7.598],
+    [50.631, 7.215],
+    [50.938, 6.960],
+    [50.941, 6.774],
+    [50.922, 6.361],
+  ],
+};
+
+/* Map each route id to a segment key + optional lateral offset for parallel lines */
+const routeSegments = {
+  A1t1: { seg: 'zuerich-koeln',          offset: 0 },
+  A1t2: { seg: 'zuerich-koeln',          offset: 0.04 },
+  A3t1: { seg: 'zuerich-frankfurt',      offset: 0 },
+  A3t2: { seg: 'zuerich-frankfurt',      offset: 0.04 },
+  A2t1: { seg: 'koeln-juelich',          offset: 0 },
+  A2t2: { seg: 'koeln-juelich',          offset: 0.025 },
+  A4t1: { seg: 'frankfurt-juelich',      offset: 0 },
+  A4t2: { seg: 'frankfurt-juelich',      offset: 0.04 },
+  B1t1: { seg: 'muenchen-frankfurt',     offset: 0 },
+  B1t2: { seg: 'muenchen-frankfurt',     offset: 0.04 },
+  B2t1: { seg: 'frankfurt-koeln',        offset: 0 },
+  B2t2: { seg: 'frankfurt-koeln',        offset: 0.04 },
+  B3t1: { seg: 'koeln-juelich-b',        offset: -0.025 },
+  B3t2: { seg: 'koeln-juelich-b',        offset: -0.05 },
+  B4t1: { seg: 'muenchen-nuernberg',     offset: 0 },
+  B5t1: { seg: 'nuernberg-frankfurt',    offset: 0 },
+  B6t1: { seg: 'frankfurt-juelich-direct', offset: -0.04 },
+  B6t2: { seg: 'frankfurt-juelich-direct', offset: -0.08 },
+};
+
+function offsetCoords(coords, delta) {
+  if (!delta) return coords;
+  return coords.map(([lat, lng]) => [lat + delta * 0.5, lng + delta]);
+}
+
+const allPolylines = [];
+
+ROUTES.forEach(r => {
+  const seg = routeSegments[r.id];
+  const raw = RAIL_SEGMENTS[seg.seg];
+  const latlngs = offsetCoords(raw, seg.offset);
+  const isMaint = r.id === 'B2t2';
+  const pl = L.polyline(latlngs, {
+    color: r.color,
+    weight: r.dash ? 2 : 3.5,
+    opacity: isMaint ? 0.5 : 0.8,
+    dashArray: isMaint ? '3 5' : r.dash ? '9 5' : null,
+  }).addTo(map);
+  allPolylines.push(pl);
+  pl.on('click', () => showInfo({
+    type: isMaint ? 'Edge / Variable — BLOCKED' : 'Edge / Variable',
+    title: `${r.id}: ${r.label}`,
+    vars: [r.id],
+    cost: r.cost + ' min',
+    costLabel: 'Base travel time',
+    detail: r.detail,
+    color: r.color,
+  }));
+  pl.on('mouseover', () => pl.setStyle({ weight: r.dash ? 3 : 5, opacity: 1 }));
+  pl.on('mouseout',  () => pl.setStyle({ weight: r.dash ? 2 : 3.5, opacity: isMaint ? 0.5 : 0.8 }));
+});
+
+Object.entries(CITIES).forEach(([id, c]) => {
+  const isBottle = id === 'koeln';
+  const isPlatform = false;
+  const isGoal   = id === 'juelich';
+  const radius   = isBottle || isGoal ? 12 : isPlatform ? 10 : 9;
+  const strokeCol = isBottle ? '#f5b731' : isGoal ? '#fff' : 'rgba(255,255,255,0.6)';
+
+  const m = L.circleMarker(c.ll, {
+    radius, fillColor: c.color, color: strokeCol,
+    weight: (isBottle || isGoal) ? 2.5 : 1.5, fillOpacity: 0.95,
+  }).addTo(map);
+
+  m.on('click', () => showInfo({
+    type: isBottle ? 'Bottleneck (k=1)' : isPlatform ? 'Platform cap (k=2)' : isGoal ? 'Destination' : 'Station',
+    title: c.name, vars: c.vars, cost: undefined,
+    detail: `${c.role} — ${c.detail}`, color: c.color,
+  }));
+  m.on('mouseover', () => m.setStyle({ radius: radius + 3 }));
+  m.on('mouseout',  () => m.setStyle({ radius }));
+
+  L.tooltip({ permanent:true, direction: id==='koeln'?'left':'right', offset:[10,0], className:'leaflet-tooltip' })
+    .setContent(`<b>${c.name}</b>`).setLatLng(c.ll).addTo(map);
+});
+
+/* ══════════════════════════════════════════════════════════
+   Q-MATRIX (18 × 18)
+
+   Index → variable:
+    0  A1t1   1  A1t2   2  A3t1   3  A3t2
+    4  A2t1   5  A2t2   6  A4t1   7  A4t2
+    8  B1t1   9  B1t2  10  B2t1  11  B2t2(blocked)
+   12  B3t1  13  B3t2  14  B4t1  15  B5t1
+   16  B6t1  17  B6t2
+
+   OFF-DIAGONAL ENTRIES by constraint:
+   FLOW (purple) — path continuity pairs:
+     (0,4)A1t1→A2t1  (1,5)A1t2→A2t2
+     (2,6)A3t1→A4t1  (3,7)A3t2→A4t2
+     (8,10)B1t1→B2t1 (9,11)B1t2→B2t2
+     (10,12)B2t1→B3t1 (11,13)B2t2→B3t2
+     (8,16)B1t1→B6t1  (9,17)B1t2→B6t2
+     (14,15)B4t1→B5t1 (15,16)B5t1→B6t1
+
+   EXCL (purple) — route alternatives (same train, same slot group):
+     (0,1) A1 t1/t2    (2,3) A3 t1/t2
+     (0,2)(0,3)(1,2)(1,3) A1 vs A3 cross-slot
+     (8,9) B1 t1/t2    (8,14)(9,14) B1 vs B4
+     (16,17) B6 t1/t2
+
+   CAPACITY Cologne (amber) — same time slot, both arrive at CGN:
+     (0,10) A1t1 & B2t1? No — A1t1 arrives t1, B2t1 arrives t2 (different slots, ok)
+     (1,10) A1t2 & B2t1 — A1 midday vs B2 midday → CONFLICT (amber)
+     (5,12) A2t2 & B3t1 — both at CGN? No, these are departures from CGN
+     Actually: CGN arrivals: A1t1(0), A1t2(1), B2t1(10), B2t2(11)
+     Same-slot conflicts: (1,10) both midday
+
+   PLATFORM Frankfurt (amber) — same slot, all arrivals at FRA (cap 2):
+     FRA arrivals: A3t1(2), A3t2(3), B1t1(8), B1t2(9), B5t1(15)
+     Same-slot pairs (t1): (2,8),(2,15),(8,15)
+     Same-slot pairs (t2): (3,9)
+
+   MAINT block (coral) — B2t2=11 coupled with everything (penalty = ∞ on diagonal):
+     x_B2t2 must = 0, diagonal entry huge, plus cross-term with B1t2(9) which routes into it
+
+   TIME WINDOW (coral) — soft penalty pairs (late/early arrivals coupled):
+     Late arrivals: A2t1(4), A4t2(7), B3t2(13), B6t2(17)
+     Early: A2t1(4)
+     These get extra diagonal weight but also cross with other soft vars
+
+   CREW (coral) — Nuremberg path: B4t1(14)+B5t1(15)+B6t1(16) total > limit if combined wrong
+     Cross-term (14,15) already in flow; crew adds weight to (14,16),(15,16)
+   ══════════════════════════════════════════════════════════ */
+
+const N = 18;
+const labels = [
+  'A1·t1','A1·t2','A3·t1','A3·t2',
+  'A2·t1','A2·t2','A4·t1','A4·t2',
+  'B1·t1','B1·t2','B2·t1','B2·t2',
+  'B3·t1','B3·t2','B4·t1','B5·t1',
+  'B6·t1','B6·t2'
+];
+
+const flowPairs = new Set([
+  // Train A — linear chain, each in-edge must pair with out-edge
+  '0,4',   // A1t1 → A2t1
+  '1,5',   // A1t2 → A2t2
+  '2,6',   // A3t1 → A4t1
+  '3,7',   // A3t2 → A4t2
+  // Train B via Nuremberg — linear chain
+  '14,15', // B4t1 → B5t1
+  '15,16', // B5t1 → B6t1
+  // Train B at Cologne — linear chain
+  '10,12', // B2t1 → B3t1
+  '11,13', // B2t2 → B3t2
+]);
+
+// At Frankfurt, Train B branches: B1t1 exits via B2t1 OR B6t1 (not both).
+// (x_B1t1 - x_B2t1 - x_B6t1)² = x_B1t1 - 2x_B1t1·x_B2t1 - 2x_B1t1·x_B6t1 + 2x_B2t1·x_B6t1 + ...
+// → flow coupling B1t1↔B2t1: -2,  B1t1↔B6t1: -2,  mutual excl B2t1↔B6t1: +2
+// Same for t2: B1t2↔B2t2: -2, B1t2↔B6t2: -2, B2t2↔B6t2: +2
+const frankfurtFlowPairs = new Set([
+  '8,10',  // B1t1 ↔ B2t1  (-2)
+  '8,16',  // B1t1 ↔ B6t1  (-2)
+  '9,11',  // B1t2 ↔ B2t2  (-2)
+  '9,17',  // B1t2 ↔ B6t2  (-2)
+]);
+const frankfurtExclPairs = new Set([
+  '10,16', // B2t1 and B6t1 both active → impossible (B1t1 can't exit twice)
+  '11,17', // B2t2 and B6t2 both active → impossible
+]);
+
+const exclPairs = new Set([
+  // Train A: exactly one departure (one route, one slot)
+  '0,1',         // A1t1 vs A1t2 (same route, different slots)
+  '2,3',         // A3t1 vs A3t2
+  '0,2','0,3',   // A1 vs A3 cross-slot
+  '1,2','1,3',
+  // Train B: exactly one departure
+  '8,9',         // B1t1 vs B1t2
+  '8,14',        // B1t1 vs B4t1
+  '9,14',        // B1t2 vs B4t1
+  '16,17',       // B6t1 vs B6t2 (same edge, different slots — only one can be chosen)
+]);
+
+const capCGN = new Set(['1,10']); // A1t2 & B2t1 both arrive Cologne 15:30
+
+const softPairs = new Set([
+  '14,16', // Crew: B4t1 + B6t1 Nuremberg detour soft penalty
+]);
+
+function cellType(r, c) {
+  if (r === c) return r === 11 ? 'time' : 'diag';
+  if (c < r) return 'lower';
+  const k = `${Math.min(r,c)},${Math.max(r,c)}`;
+  if (capCGN.has(k)) return 'cap';
+  if (frankfurtExclPairs.has(k)) return 'cap'; // also amber — hard mutual excl
+  if (flowPairs.has(k) || frankfurtFlowPairs.has(k)) return 'flux';
+  if (exclPairs.has(k)) return 'flux'; // purple — route exclusivity
+  if (softPairs.has(k)) return 'time';
+  return 'zero';
+}
+
+const container = document.getElementById('matrix-container');
+const colLabels  = document.createElement('div');
+colLabels.className = 'matrix-row-labels';
+labels.forEach(l => {
+  const d = document.createElement('div');
+  d.className = 'matrix-col-label';
+  d.textContent = l;
+  colLabels.appendChild(d);
+});
+container.appendChild(colLabels);
+
+const cellEls = [];
+
+/* ── Q-matrix numeric values ──────────────────────────────
+   QUBO: L = xᵀQx, Q upper triangular.
+
+   Flow conservation: (x_in - x_out)² →
+     +λ on each diagonal, -2λ off-diagonal (coupling)
+
+   Frankfurt branching: (x_in - x_out1 - x_out2)² →
+     +λ on diag of in, +λ on each out diag
+     -2λ between in↔out1, in↔out2
+     +2λ between out1↔out2 (mutual exclusion)
+
+   Route exclusivity: (x_i + x_j - 1)² → +2λ off-diagonal
+
+   Cologne cap: same as exclusivity → +2λ off-diagonal
+
+   Soft: extra μ on diagonal for time window / crew penalties.
+   Maintenance block: B2t2 (idx 11) diagonal → ∞
+   ─────────────────────────────────────────────────────── */
+const λ = 1;
+const μ = 0.5;
+
+const costs = [240,240,310,310,30,30,120,120,210,210,90,9999,30,30,70,110,120,120];
+const softDiagAdd = {4:30*μ, 7:30*μ, 13:30*μ, 17:30*μ};
+
+// Count how many flow equations each variable participates in (for diagonal λ additions)
+const flowDiagCount = Array(N).fill(0);
+// Simple linear pairs: each var appears once (as in or out)
+[[0,4],[1,5],[2,6],[3,7],[14,15],[15,16],[10,12],[11,13]].forEach(([a,b])=>{
+  flowDiagCount[a]++; flowDiagCount[b]++;
+});
+// Frankfurt branching: B1t1(8) is in-node for B2t1(10) AND B6t1(16)
+// (x8 - x10 - x16)²: diag contributions: +1 for 8, +1 for 10, +1 for 16
+[8,10,16,9,11,17].forEach(i => flowDiagCount[i]++);
+
+const Q = Array.from({length:N}, (_,r) =>
+  Array.from({length:N}, (_,c) => {
+    if (c < r) return null;
+    if (r === c) {
+      if (r === 11) return '∞';
+      let v = costs[r] + flowDiagCount[r] * λ;
+      if (softDiagAdd[r]) v = Math.round(v + softDiagAdd[r]);
+      return Math.round(v);
+    }
+    const k = `${r},${c}`;
+    if (capCGN.has(k) || frankfurtExclPairs.has(k)) return +2;
+    if (exclPairs.has(k)) return +2;
+    if (frankfurtFlowPairs.has(k)) return -2;
+    if (flowPairs.has(k)) return -2;
+    if (softPairs.has(k)) return +1;
+    return 0;
+  })
+);
+
+for (let r = 0; r < N; r++) {
+  const row = document.createElement('div');
+  row.className = 'matrix-row';
+  const rl = document.createElement('div');
+  rl.className = 'matrix-row-label';
+  rl.textContent = labels[r];
+  row.appendChild(rl);
+  cellEls.push([]);
+  for (let c = 0; c < N; c++) {
+    const cell = document.createElement('div');
+    const ct = cellType(r, c);
+    cell.className = 'cell ' + ct;
+    const val = Q[r][c];
+    if (val !== null && val !== 0) {
+      cell.textContent = val;
+      cell.style.color = 'rgba(255,255,255,0.9)';
+    }
+    cell.title = (ct !== 'zero' && ct !== 'lower') ? `Q[${labels[r]}, ${labels[c]}] = ${val}` : '';
+    cell.addEventListener('mouseenter', () => {
+      cellEls.forEach((rowArr, ri) => rowArr.forEach((el, ci) => {
+        el.classList.toggle('active-row', ri === r || ci === c);
+      }));
+    });
+    cell.addEventListener('mouseleave', () => {
+      cellEls.forEach(rowArr => rowArr.forEach(el => el.classList.remove('active-row','active-col')));
+    });
+    row.appendChild(cell);
+    cellEls[r].push(cell);
+  }
+  container.appendChild(row);
+}
+
+/* ── Solution overlay ── */
+const X_OPT = [0,1,0,0, 0,1,0,0, 0,0,0,0, 0,0,1,1,1,0];
+
+// Build x-vector bit display
+const bitsEl = document.getElementById('sol-xbits');
+X_OPT.forEach((v, i) => {
+  const bit = document.createElement('div');
+  bit.className = 'sol-bit ' + (v ? 'on' : 'off');
+  bit.innerHTML = `${v}<div class="sol-bit-label">${labels[i]}</div>`;
+  bitsEl.appendChild(bit);
+});
+
+let solVisible = false;
+let solPolylines = [];
+
+function showSolution() {
+  if (solVisible) { hideSolution(); return; }
+  solVisible = true;
+  document.getElementById('sol-overlay').style.display = 'block';
+  document.getElementById('sol-btn').textContent = '✕ Hide Solution';
+  document.getElementById('sol-btn').style.background = 'var(--coral)';
+
+  // Dim all base route polylines
+  allPolylines.forEach(pl => pl.setStyle({ opacity: 0.1 }));
+
+  // Draw bold solution lines on top
+  const solSegs = [
+    { coords: offsetCoords(RAIL_SEGMENTS['zuerich-koeln'],            0.04),  color:'#ffffff' },
+    { coords: offsetCoords(RAIL_SEGMENTS['koeln-juelich'],            0.025), color:'#ffffff' },
+    { coords: RAIL_SEGMENTS['muenchen-nuernberg'],                             color:'#4a7fff' },
+    { coords: RAIL_SEGMENTS['nuernberg-frankfurt'],                            color:'#4a7fff' },
+    { coords: offsetCoords(RAIL_SEGMENTS['frankfurt-juelich-direct'], -0.04), color:'#4a7fff' },
+  ];
+  solSegs.forEach(s => {
+    const pl = L.polyline(s.coords, { color: s.color, weight: 5, opacity: 1 }).addTo(map);
+    solPolylines.push(pl);
+  });
+}
+
+function hideSolution() {
+  solVisible = false;
+  document.getElementById('sol-overlay').style.display = 'none';
+  document.getElementById('sol-btn').textContent = '▶ Show Optimal Solution';
+  document.getElementById('sol-btn').style.background = 'var(--teal)';
+  allPolylines.forEach(pl => pl.setStyle({ opacity: 0.8 }));
+  solPolylines.forEach(pl => map.removeLayer(pl));
+  solPolylines = [];
+}
 </script>
 </body>
 </html>
