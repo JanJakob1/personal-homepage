@@ -21,9 +21,6 @@ main:
     weight: 13
   - name: News
     url: /#news
-  - name: Qubo
-    url: https://jan-jakob.tech/qubo/
-    weight: 14
   # - name: Teaching
   #   url: teaching/
   #   weight: 40
