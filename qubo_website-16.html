@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Groverthinkers — Train Optimization</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg:        #0a0e14;
+    --bg2:       #111620;
+    --bg3:       #181f2e;
+    --border:    rgba(255,255,255,0.07);
+    --border2:   rgba(255,255,255,0.14);
+    --text:      #e8eaf0;
+    --muted:     #6b7280;
+    --teal:      #0fd4a8;
+    --teal-dim:  #0a9478;
+    --purple:    #9b8df5;
+    --coral:     #f47c5a;
+    --amber:     #f5b731;
+    --white:     #ffffff;
+    --panel-w:   750px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%; width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    overflow: hidden;
+  }
+
+  /* ── Layout ── */
+  .shell {
+    display: grid;
+    grid-template-columns: 1fr var(--panel-w);
+    grid-template-rows: 48px 1fr;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Header ── */
+  header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    z-index: 100;
+  }
+  header .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+  }
+  header .sep { width: 1px; height: 20px; background: var(--border2); }
+  header .sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  header .pill {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Map ── */
+  #map-wrap {
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  #map { width: 100%; height: 100%; }
+
+  /* ── Info overlay on map ── */
+  #map-info {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    width: 280px;
+    background: rgba(10,14,20,0.92);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    backdrop-filter: blur(8px);
+    transition: opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
+  }
+  #map-info.show { opacity: 1; pointer-events: auto; }
+  #map-info .mi-type {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  #map-info .mi-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  #map-info .mi-var {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin: 2px 3px 2px 0;
+    font-weight: 500;
+  }
+  #map-info .mi-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  #map-info .mi-row span.val {
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  /* ── Right panel ── */
+  #panel {
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .panel-section {
+    padding: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  /* ── Target function ── */
+  .formula-box {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .formula-main {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.04em;
+  }
+  .formula-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .terms-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .term-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 11px;
+    border-left: 3px solid;
+    transition: border-color 0.2s;
+  }
+  .term-card .tc-name {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+  .term-card .tc-formula {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .term-card .tc-desc {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* stat-row removed */
+
+  /* ── Legend ── */
+  .matrix-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .leg-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ── Solution button & overlay ── */
+  #sol-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    background: var(--teal);
+    color: #0a0e14;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: opacity 0.15s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  #sol-btn:hover { opacity: 0.85; transform: scale(1.03); }
+
+  #sol-overlay {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 750px;
+    background: var(--bg2);
+    border-top: 1px solid var(--border2);
+    border-left: 1px solid var(--border2);
+    padding: 20px 28px;
+    z-index: 1000;
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.6);
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+  .sol-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .sol-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .sol-close {
+    background: none;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+  }
+  .sol-close:hover { color: var(--text); border-color: var(--text); }
+  .sol-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .sol-train {
+    background: var(--bg3);
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .sol-train-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .sol-route {
+    font-size: 11px;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .sol-detail {
+    font-size: 9px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .sol-vars { display: flex; gap: 6px; flex-wrap: wrap; }
+  .sol-var {
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .sol-xvec {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+  }
+  .sol-xlabel {
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .sol-xbits { display: flex; gap: 3px; }
+  .sol-bit {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    flex-direction: column;
+  }
+  .sol-bit.on  { background: var(--teal); color: #0a0e14; }
+  .sol-bit.off { background: rgba(255,255,255,0.05); color: var(--muted); }
+  .sol-bit-label { font-size: 6px; font-weight: 400; margin-top: 1px; opacity: 0.7; }
+  .sol-cost {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+  .sol-cost-label { font-size: 11px; color: var(--muted); }
+  .sol-cost-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .sol-cost-unit { font-size: 10px; color: var(--muted); }
+
+  /* Leaflet overrides */
+  .leaflet-container { background: #0d1520 !important; }
+  .leaflet-tile { filter: brightness(0.55) saturate(0.5) hue-rotate(195deg); }
+  .leaflet-control-attribution { display: none; }
+  .leaflet-control-zoom a {
+    background: var(--bg2) !important;
+    color: var(--text) !important;
+    border-color: var(--border2) !important;
+  }
+
+  /* Tooltip custom */
+  .leaflet-tooltip {
+    background: rgba(10,14,20,0.95) !important;
+    border: 1px solid var(--border2) !important;
+    color: var(--text) !important;
+    font-family: 'DM Mono', monospace !important;
+    font-size: 11px !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    box-shadow: none !important;
+  }
+  .leaflet-tooltip-top::before { display: none; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Header -->
+  <header>
+    <span class="logo">Groverthinkers</span>
+    <div class="sep"></div>
+    <span class="sub">Train Optimization · Zürich / Munich / Hamburg → Jülich</span>
+    <span class="pill">22 Variables · 3 Trains · HUBO</span>
+  </header>
+
+  <!-- Map -->
+  <div id="map-wrap">
+    <div id="map"></div>
+    <div id="map-info">
+      <div class="mi-type" id="mi-type">—</div>
+      <div class="mi-title" id="mi-title">—</div>
+      <div id="mi-vars"></div>
+      <div class="mi-row" id="mi-row" style="display:none">
+        <span id="mi-label">Kosten</span>
+        <span class="val" id="mi-val">—</span>
+      </div>
+      <div class="mi-row" id="mi-detail" style="margin-top:6px;display:none">
+        <span id="mi-detail-text" style="color:var(--muted);font-size:10px;line-height:1.4"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div id="panel">
+
+    <!-- Zielfunktion -->
+    <div class="panel-section">
+      <div class="section-label">Objective Function</div>
+      <div class="formula-box">
+        <div class="formula-main">L = x<sup>T</sup> Q x + ⟨T, x⊗x⊗x⟩</div>
+        <div class="formula-sub">HUBO — minimize over x ∈ {0, 1}<sup>22</sup></div>
+      </div>
+      <div class="terms-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="term-card" style="border-color:var(--teal)">
+          <div class="tc-name">L_Cost</div>
+          <div class="tc-formula">Σ c_e · x_{i,e,t}</div>
+          <div class="tc-desc">Travel time per edge (diagonal).</div>
+        </div>
+        <div class="term-card" style="border-color:var(--purple)">
+          <div class="tc-name">L_Flow · λ_F</div>
+          <div class="tc-formula">(Σ x_in − Σ x_out)²</div>
+          <div class="tc-desc">Valid connected path for each train.</div>
+        </div>
+        <div class="term-card" style="border-color:var(--purple)">
+          <div class="tc-name">L_Excl · λ_E</div>
+          <div class="tc-formula">(Σ_r x_{i,r} − 1)²</div>
+          <div class="tc-desc">Each train takes exactly one route.</div>
+        </div>
+        <div class="term-card" style="border-color:var(--amber)">
+          <div class="tc-name">L_Cap · λ_K</div>
+          <div class="tc-formula">(Σ x_{·,CGN,t} + s − 1)²</div>
+          <div class="tc-desc">Cologne: max 1 train per time slot.</div>
+        </div>
+        <div class="term-card" style="border-color:var(--coral)">
+          <div class="tc-name">L_Window · μ_W</div>
+          <div class="tc-formula">Σ penalty(t) · x_{i,e,t}</div>
+          <div class="tc-desc">Arrive within schedule window.</div>
+        </div>
+        <div class="term-card" style="border-color:var(--coral)">
+          <div class="tc-name">L_Crew · μ_C</div>
+          <div class="tc-formula">Σ max(0, T_i − T_max)² · x</div>
+          <div class="tc-desc">Total journey ≤ crew shift limit.</div>
+        </div>
+        <div class="term-card" style="border-color:var(--coral)">
+          <div class="tc-name">L_Maint · λ_M</div>
+          <div class="tc-formula">Σ block_{e,t} · x_{i,e,t}</div>
+          <div class="tc-desc">Blocked tracks in maintenance slots.</div>
+        </div>
+      </div>
+
+      <div class="matrix-legend" style="margin-top:10px;">
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(15,212,168,0.5)"></div>Cost (diag)</div>
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(155,141,245,0.5)"></div>Flow / Excl.</div>
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(245,183,49,0.5)"></div>Capacity</div>
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(244,124,90,0.5)"></div>Window / Crew / Maint.</div>
+      </div>
+
+      <!-- HUBO cubic term -->
+      <div style="margin-top:14px;">
+        <div class="section-label" style="margin-bottom:8px;">Cubic HUBO Term — T tensor</div>
+        <div style="background:var(--bg3);border:1px solid #f5b73155;border-radius:8px;padding:14px 18px;">
+          <div style="display:flex;align-items:center;gap:18px;">
+            <div style="flex:1">
+              <div style="font-size:11px;color:var(--text);margin-bottom:5px;">x<sub>A1·t2</sub> · x<sub>B2·t1</sub> · x<sub>C1·t2</sub></div>
+              <div style="font-size:10px;color:var(--muted);line-height:1.5;">Three trains collide at Cologne 15:30 → degree-3 penalty term. Cannot be expressed in Q alone → <strong style="color:#f5b731">HUBO</strong>.</div>
+            </div>
+            <div style="font-size:9px;color:var(--muted);text-align:right;line-height:1.8;flex-shrink:0;">from<br/>(x₁+x₁₀+x₁₉−1)²<br/>expanded</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solution button -->
+      <div style="margin-top:16px;">
+        <button id="sol-btn" onclick="showSolution()" style="width:100%;">▶ Show Optimal Solution</button>
+      </div>
+
+    </div>
+
+    <!-- Solution overlay -->
+    <div id="sol-overlay" style="display:none">
+      <div class="sol-header">
+        <span class="sol-title">Optimal Solution</span>
+        <button class="sol-close" onclick="hideSolution()">✕</button>
+      </div>
+      <div class="sol-body">
+        <div class="sol-row" style="grid-template-columns:1fr 1fr 1fr;">
+          <div class="sol-train" style="border-color:#ffffff22">
+            <div class="sol-train-label" style="color:#fff">🚄 Train A</div>
+            <div class="sol-route">Zürich → Cologne → Jülich</div>
+            <div class="sol-detail">dep 11:30 · arr Cologne 15:30 · arr Jülich 16:00 ✓</div>
+            <div class="sol-vars">
+              <span class="sol-var" style="background:#ffffff18;border:1px solid #ffffff44;color:#fff">A1·t2 = 1</span>
+              <span class="sol-var" style="background:#ffffff18;border:1px solid #ffffff44;color:#fff">A2·t2 = 1</span>
+            </div>
+          </div>
+          <div class="sol-train" style="border-color:#1a3a6b88">
+            <div class="sol-train-label" style="color:#6b9fff">🚄 Train B</div>
+            <div class="sol-route">Munich → Nuremberg → Frankfurt → Jülich</div>
+            <div class="sol-detail">dep 09:00 · arr Frankfurt 12:00 · arr Jülich 14:30 ✓</div>
+            <div class="sol-vars">
+              <span class="sol-var" style="background:#1a3a6b44;border:1px solid #1a3a6baa;color:#6b9fff">B4·t1 = 1</span>
+              <span class="sol-var" style="background:#1a3a6b44;border:1px solid #1a3a6baa;color:#6b9fff">B5·t1 = 1</span>
+              <span class="sol-var" style="background:#1a3a6b44;border:1px solid #1a3a6baa;color:#6b9fff">B6·t1 = 1</span>
+            </div>
+          </div>
+          <div class="sol-train" style="border-color:#e05cff55">
+            <div class="sol-train-label" style="color:#e05cff">🚄 Train C</div>
+            <div class="sol-route">Hamburg → Cologne → Jülich</div>
+            <div class="sol-detail">dep 07:00 · arr Cologne 10:10 · arr Jülich 10:40 (early penalty)</div>
+            <div class="sol-vars">
+              <span class="sol-var" style="background:#e05cff18;border:1px solid #e05cff44;color:#e05cff">C1·t1 = 1</span>
+              <span class="sol-var" style="background:#e05cff18;border:1px solid #e05cff44;color:#e05cff">C2·t1 = 1</span>
+            </div>
+          </div>
+        </div>
+        <div class="sol-xvec">
+          <div class="sol-xlabel">x* =</div>
+          <div class="sol-xbits" id="sol-xbits"></div>
+        </div>
+        <div class="sol-cost">
+          <span class="sol-cost-label">L(x*) =</span>
+          <span class="sol-cost-val">761.5</span>
+          <span class="sol-cost-unit">min total (A:270 + B:300 + C:220 + soft)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   NETWORK — 18 binary variables, 2 trains, 3 time slots
+   Variables are time-indexed: x_{train, edge, timeslot}
+
+   Time slots: t1=morning, t2=midday, t3=afternoon
+   Edges:
+     A1: Zürich→Cologne       (240 min)
+     A2: Cologne→Jülich       (30 min)
+     A3: Zürich→Frankfurt     (310 min)
+     A4: Frankfurt→Jülich     (120 min)
+     B1: Munich→Frankfurt     (210 min)
+     B2: Frankfurt→Cologne    (90 min)
+     B3: Cologne→Jülich       (30 min)
+     B4: Munich→Nuremberg     (70 min)
+     B5: Nuremberg→Frankfurt  (110 min)
+     B6: Frankfurt→Jülich     (120 min)
+
+   Variable list (18):
+     0  x_A1_t1   Zürich→Cologne, morning
+     1  x_A1_t2   Zürich→Cologne, midday
+     2  x_A3_t1   Zürich→Frankfurt, morning
+     3  x_A3_t2   Zürich→Frankfurt, midday
+     4  x_A2_t1   Cologne→Jülich (A), morning      [A2 follows A1_t1]
+     5  x_A2_t2   Cologne→Jülich (A), midday       [A2 follows A1_t2]
+     6  x_A4_t1   Frankfurt→Jülich (A), midday     [A4 follows A3_t1]
+     7  x_A4_t2   Frankfurt→Jülich (A), afternoon  [A4 follows A3_t2]
+     8  x_B1_t1   Munich→Frankfurt, morning
+     9  x_B1_t2   Munich→Frankfurt, midday
+    10  x_B2_t1   Frankfurt→Cologne (B), midday    [follows B1_t1]
+    11  x_B2_t2   Frankfurt→Cologne (B), afternoon [follows B1_t2]
+    12  x_B3_t1   Cologne→Jülich (B), midday       [follows B2_t1]
+    13  x_B3_t2   Cologne→Jülich (B), afternoon    [follows B2_t2]
+    14  x_B4_t1   Munich→Nuremberg, morning
+    15  x_B5_t1   Nuremberg→Frankfurt, midday      [follows B4_t1]
+    16  x_B6_t1   Frankfurt→Jülich (B direct), afternoon [follows B5_t1 or B1_t1]
+    17  x_B6_t2   Frankfurt→Jülich (B direct), afternoon [follows B1_t2]
+
+   CONSTRAINTS:
+   1. Flow conservation (path continuity per train)
+   2. Route exclusivity (each train departs exactly once)
+   3. Cologne bottleneck cap k=1 per time slot (HARD)
+   4. Frankfurt platform cap k=2 per time slot (HARD)
+   5. Time windows — penalty if arriving outside preferred window (SOFT)
+   6. Crew hours — penalty if total journey > 480 min (SOFT)
+   7. Maintenance block — x_B2_t2 blocked (Frankfurt→Cologne afternoon) (HARD)
+   8. Maintenance block — x_A1_t1 has higher cost (partial restriction morning) (SOFT)
+   ══════════════════════════════════════════════════════════ */
+
+const CITIES = {
+  zuerich:   { ll:[47.376, 8.541],  name:'Zürich',    role:'Train A origin',      color:'#ffffff',
+    vars:['x_A1_t1','x_A1_t2','x_A3_t1','x_A3_t2'],
+    detail:'Train A: t1 departs 06:00, t2 departs 11:30. Via Cologne (A1, 240 min) or Frankfurt (A3, 310 min). Exactly one slot+route active.' },
+  muenchen:  { ll:[48.137,11.576],  name:'Munich',    role:'Train B origin',      color:'#1a3a6b',
+    vars:['x_B1_t1','x_B1_t2','x_B4_t1'],
+    detail:'Train B: t1 departs 09:00, t2 departs 13:00. Direct to Frankfurt (210 min) or via Nuremberg (70+110 min). Exactly one departure.' },
+  hamburg:   { ll:[53.553, 9.992],  name:'Hamburg',   role:'Train C origin',      color:'#e05cff',
+    vars:['x_C1_t1','x_C1_t2'],
+    detail:'Train C: t1 departs 07:00 (arr Cologne 10:10), t2 departs 12:00 (arr Cologne 15:12). C1_t2 arrives Cologne ~15:30 → THREE-WAY CONFLICT with A1_t2 and B2_t1 → cubic HUBO term!' },
+  koeln:     { ll:[50.938, 6.960],  name:'Cologne',   role:'Bottleneck (k=1)',    color:'#f5b731',
+    vars:['x_A1_t1','x_A1_t2','x_B2_t1','x_C1_t1','x_C1_t2'],
+    detail:'THREE-WAY CONFLICT at 15:30: A1_t2 + B2_t1 + C1_t2 all arrive simultaneously → (x_A1t2 + x_B2t1 + x_C1t2 − 1)² contains x_A·x_B·x_C cubic term → HUBO (degree 3)!' },
+  frankfurt: { ll:[50.110, 8.682],  name:'Frankfurt', role:'Central node',         color:'#9b8df5',
+    vars:['x_A3_t1','x_A3_t2','x_B1_t1','x_B1_t2','x_B5_t1'],
+    detail:'Inbound: A3 (06:00+310=11:10 or 11:30+310=16:40), B1 (09:00+210=12:30 or 13:00+210=16:30), B5 (09:00+280=13:40). Outbound: A4, B2, B6.' },
+  nuernberg: { ll:[49.453,11.077],  name:'Nuremberg', role:'Intermediate node B', color:'#1a3a6b',
+    vars:['x_B4_t1','x_B5_t1'],
+    detail:'B4_t1: departs Munich 09:00, arrives Nuremberg 10:10. B5_t1: departs 10:10, arrives Frankfurt 12:00.' },
+  juelich:   { ll:[50.922, 6.361],  name:'Jülich ★',  role:'Destination',         color:'#f47c5a',
+    vars:['x_A2_t1','x_A2_t2','x_A4_t1','x_A4_t2','x_B3_t1','x_B3_t2','x_B6_t1','x_B6_t2','x_C2_t1','x_C2_t2'],
+    detail:'Preferred arrival window: 14:00–17:00. All three trains must arrive. C2_t1 arr 10:40 (penalty), C2_t2 arr 15:42 ✓.' },
+};
+
+const ROUTES = [
+  { id:'A1t1', from:'zuerich',   to:'koeln',     color:'#ffffff', dash:false, cost:240, label:'Zürich→Cologne (dep 06:00, arr 10:00)',      detail:'Train A t1: departs 06:00, arrives Cologne 10:00. Maintenance soft penalty.' },
+  { id:'A1t2', from:'zuerich',   to:'koeln',     color:'#ffffff', dash:true,  cost:240, label:'Zürich→Cologne (dep 11:30, arr 15:30)',      detail:'Train A t2: arr Cologne 15:30. ⚠️ THREE-WAY CONFLICT with B2_t1 and C1_t2 → cubic HUBO term.' },
+  { id:'A3t1', from:'zuerich',   to:'frankfurt', color:'#ffffff', dash:false, cost:310, label:'Zürich→Frankfurt (dep 06:00, arr 11:10)',    detail:'Train A t1 via Frankfurt.' },
+  { id:'A3t2', from:'zuerich',   to:'frankfurt', color:'#ffffff', dash:true,  cost:310, label:'Zürich→Frankfurt (dep 11:30, arr 16:40)',   detail:'Train A t2 via Frankfurt. Late arrival penalty.' },
+  { id:'A2t1', from:'koeln',     to:'juelich',   color:'#ffffff', dash:false, cost:30,  label:'Cologne→Jülich A (arr 10:30)',               detail:'Follows A1_t1. Early arrival — soft penalty.' },
+  { id:'A2t2', from:'koeln',     to:'juelich',   color:'#ffffff', dash:true,  cost:30,  label:'Cologne→Jülich A (arr 16:00)',               detail:'Follows A1_t2. Arrives 16:00 ✓.' },
+  { id:'A4t1', from:'frankfurt', to:'juelich',   color:'#ffffff', dash:false, cost:120, label:'Frankfurt→Jülich A (arr 13:10)',             detail:'Follows A3_t1. Small soft penalty.' },
+  { id:'A4t2', from:'frankfurt', to:'juelich',   color:'#ffffff', dash:true,  cost:120, label:'Frankfurt→Jülich A (arr 18:40)',             detail:'Follows A3_t2. Late arrival penalty.' },
+  { id:'B1t1', from:'muenchen',  to:'frankfurt', color:'#1a3a6b', dash:false, cost:210, label:'Munich→Frankfurt (dep 09:00, arr 12:30)',   detail:'Train B t1 direct.' },
+  { id:'B1t2', from:'muenchen',  to:'frankfurt', color:'#1a3a6b', dash:true,  cost:210, label:'Munich→Frankfurt (dep 13:00, arr 16:30)',   detail:'Train B t2 direct. Late penalty.' },
+  { id:'B2t1', from:'frankfurt', to:'koeln',     color:'#1a3a6b', dash:false, cost:90,  label:'Frankfurt→Cologne B (dep 12:30, arr 15:30)', detail:'⚠️ THREE-WAY CONFLICT at Cologne 15:30 with A1_t2 and C1_t2 → cubic HUBO term.' },
+  { id:'B2t2', from:'frankfurt', to:'koeln',     color:'#f47c5a', dash:true,  cost:90,  label:'Frankfurt→Cologne B ⛔ BLOCKED',             detail:'MAINTENANCE BLOCK: afternoon slot forbidden.' },
+  { id:'B3t1', from:'koeln',     to:'juelich',   color:'#1a3a6b', dash:false, cost:30,  label:'Cologne→Jülich B (arr 16:00)',               detail:'Follows B2_t1. Arrives 16:00 ✓.' },
+  { id:'B3t2', from:'koeln',     to:'juelich',   color:'#1a3a6b', dash:true,  cost:30,  label:'Cologne→Jülich B (blocked path)',            detail:'Follows B2_t2 — blocked, unreachable.' },
+  { id:'B4t1', from:'muenchen',  to:'nuernberg', color:'#1a3a6b', dash:true,  cost:70,  label:'Munich→Nuremberg (dep 09:00, arr 10:10)',   detail:'Train B detour segment 1.' },
+  { id:'B5t1', from:'nuernberg', to:'frankfurt', color:'#1a3a6b', dash:true,  cost:110, label:'Nuremberg→Frankfurt (dep 10:10, arr 12:00)', detail:'Train B detour segment 2.' },
+  { id:'B6t1', from:'frankfurt', to:'juelich',   color:'#1a3a6b', dash:false, cost:120, label:'Frankfurt→Jülich B direct (arr 14:30)',     detail:'Arrives 14:30 ✓.' },
+  { id:'B6t2', from:'frankfurt', to:'juelich',   color:'#1a3a6b', dash:true,  cost:120, label:'Frankfurt→Jülich B direct (arr 18:30)',     detail:'Late arrival penalty.' },
+  { id:'C1t1', from:'hamburg',   to:'koeln',     color:'#e05cff', dash:false, cost:190, label:'Hamburg→Cologne (dep 07:00, arr 10:10)',    detail:'Train C t1: departs 07:00, arrives Cologne 10:10. No conflict at 10:10.' },
+  { id:'C1t2', from:'hamburg',   to:'koeln',     color:'#e05cff', dash:true,  cost:190, label:'Hamburg→Cologne (dep 12:00, arr 15:12)',    detail:'Train C t2: arr Cologne ~15:30. ⚠️ THREE-WAY CONFLICT with A1_t2 and B2_t1 → x_A1t2·x_B2t1·x_C1t2 cubic HUBO term.' },
+  { id:'C2t1', from:'koeln',     to:'juelich',   color:'#e05cff', dash:false, cost:30,  label:'Cologne→Jülich C (arr 10:40)',              detail:'Follows C1_t1. Early arrival — soft penalty.' },
+  { id:'C2t2', from:'koeln',     to:'juelich',   color:'#e05cff', dash:true,  cost:30,  label:'Cologne→Jülich C (arr 15:42)',              detail:'Follows C1_t2. Arrives 15:42 ✓ within window.' },
+];
+
+/* ══════════ MAP ══════════ */
+const map = L.map('map', { zoomControl:true, attributionControl:false }).setView([50.0, 9.0], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:12 }).addTo(map);
+
+const info = document.getElementById('map-info');
+function showInfo({ type, title, vars, cost, costLabel, detail, color }) {
+  document.getElementById('mi-type').textContent = type;
+  document.getElementById('mi-title').textContent = title;
+  document.getElementById('mi-vars').innerHTML = vars.map(v =>
+    `<span class="mi-var" style="background:${color}22;color:${color};border:1px solid ${color}44">${v}</span>`
+  ).join('');
+  if (cost !== undefined) {
+    document.getElementById('mi-row').style.display = 'flex';
+    document.getElementById('mi-label').textContent = costLabel || 'Cost';
+    document.getElementById('mi-val').textContent = cost;
+  } else { document.getElementById('mi-row').style.display = 'none'; }
+  if (detail) {
+    document.getElementById('mi-detail').style.display = 'flex';
+    document.getElementById('mi-detail-text').textContent = detail;
+  } else { document.getElementById('mi-detail').style.display = 'none'; }
+  info.classList.add('show');
+}
+
+/* Real rail corridor waypoints for each city-pair segment.
+   Coordinates traced along actual ICE/IR track corridors. */
+const RAIL_SEGMENTS = {
+  // Zürich → Cologne via Rhine valley (Zürich–Basel–Karlsruhe–Mainz–Koblenz–Cologne)
+  'zuerich-koeln': [
+    [47.376, 8.541],   // Zürich HB
+    [47.559, 7.589],   // Basel SBB
+    [48.003, 7.842],   // Freiburg im Breisgau
+    [48.694, 8.013],   // Offenburg
+    [48.994, 8.401],   // Karlsruhe
+    [49.873, 8.651],   // Darmstadt
+    [49.999, 8.274],   // Mainz
+    [50.359, 7.598],   // Koblenz
+    [50.631, 7.215],   // Remagen
+    [50.938, 6.960],   // Cologne
+  ],
+  // Zürich → Frankfurt (via Basel–Karlsruhe–Mannheim–Frankfurt)
+  'zuerich-frankfurt': [
+    [47.376, 8.541],   // Zürich HB
+    [47.559, 7.589],   // Basel SBB
+    [48.003, 7.842],   // Freiburg
+    [48.694, 8.013],   // Offenburg
+    [48.994, 8.401],   // Karlsruhe
+    [49.483, 8.470],   // Mannheim
+    [49.873, 8.651],   // Darmstadt
+    [50.110, 8.682],   // Frankfurt HBF
+  ],
+  // Cologne → Jülich (local line west)
+  'koeln-juelich': [
+    [50.938, 6.960],   // Cologne
+    [50.941, 6.774],   // Horrem
+    [50.933, 6.623],   // Kerpen-Sindorf
+    [50.922, 6.361],   // Jülich
+  ],
+  // Frankfurt → Jülich (via Cologne shortcut: FRA–Koblenz–Cologne–Jülich)
+  'frankfurt-juelich': [
+    [50.110, 8.682],   // Frankfurt
+    [50.011, 8.274],   // Mainz
+    [50.359, 7.598],   // Koblenz
+    [50.631, 7.215],   // Remagen
+    [50.938, 6.960],   // Cologne
+    [50.941, 6.774],   // Horrem
+    [50.922, 6.361],   // Jülich
+  ],
+  // Munich → Frankfurt (via Würzburg–Fulda–Frankfurt ICE)
+  'muenchen-frankfurt': [
+    [48.137, 11.576],  // Munich HBF
+    [48.558, 10.879],  // Augsburg
+    [49.301, 10.579],  // Ansbach (approximation)
+    [49.797, 9.936],   // Würzburg
+    [50.274, 9.683],   // Fulda
+    [50.110, 8.682],   // Frankfurt HBF
+  ],
+  // Frankfurt → Cologne (ICE Cologne–Frankfurt high-speed line)
+  'frankfurt-koeln': [
+    [50.110, 8.682],   // Frankfurt HBF
+    [50.370, 8.017],   // Limburg a.d. Lahn
+    [50.594, 7.226],   // Siegburg/Bonn
+    [50.938, 6.960],   // Cologne
+  ],
+  // Cologne → Jülich (same as above)
+  'koeln-juelich-b': [
+    [50.938, 6.960],
+    [50.941, 6.774],
+    [50.933, 6.623],
+    [50.922, 6.361],
+  ],
+  // Munich → Nuremberg (ICE/IC main line)
+  'muenchen-nuernberg': [
+    [48.137, 11.576],  // Munich HBF
+    [48.358, 11.780],  // Freising
+    [48.701, 11.429],  // Ingolstadt HBF
+    [49.185, 11.088],  // Nuremberg HBF (approach)
+    [49.453, 11.077],  // Nuremberg HBF
+  ],
+  // Nuremberg → Frankfurt (via Würzburg)
+  'nuernberg-frankfurt': [
+    [49.453, 11.077],  // Nuremberg HBF
+    [49.797, 9.936],   // Würzburg HBF
+    [50.274, 9.683],   // Fulda
+    [50.110, 8.682],   // Frankfurt HBF
+  ],
+  // Hamburg → Cologne (via Hannover–Dortmund–Cologne)
+  'hamburg-koeln': [
+    [53.553, 9.992],   // Hamburg HBF
+    [52.376, 9.741],   // Hannover HBF
+    [51.517, 7.459],   // Dortmund HBF
+    [51.360, 7.202],   // Hagen
+    [51.220, 6.794],   // Wuppertal
+    [50.938, 6.960],   // Cologne HBF
+  ],
+  // Frankfurt → Jülich direct (via Cologne corridor)
+  'frankfurt-juelich-direct': [
+    [50.110, 8.682],
+    [50.011, 8.274],
+    [50.359, 7.598],
+    [50.631, 7.215],
+    [50.938, 6.960],
+    [50.941, 6.774],
+    [50.922, 6.361],
+  ],
+};
+
+/* Map each route id to a segment key + optional lateral offset for parallel lines */
+const routeSegments = {
+  A1t1: { seg: 'zuerich-koeln',          offset: 0 },
+  A1t2: { seg: 'zuerich-koeln',          offset: 0.04 },
+  A3t1: { seg: 'zuerich-frankfurt',      offset: 0 },
+  A3t2: { seg: 'zuerich-frankfurt',      offset: 0.04 },
+  A2t1: { seg: 'koeln-juelich',          offset: 0 },
+  A2t2: { seg: 'koeln-juelich',          offset: 0.025 },
+  A4t1: { seg: 'frankfurt-juelich',      offset: 0 },
+  A4t2: { seg: 'frankfurt-juelich',      offset: 0.04 },
+  B1t1: { seg: 'muenchen-frankfurt',     offset: 0 },
+  B1t2: { seg: 'muenchen-frankfurt',     offset: 0.04 },
+  B2t1: { seg: 'frankfurt-koeln',        offset: 0 },
+  B2t2: { seg: 'frankfurt-koeln',        offset: 0.04 },
+  B3t1: { seg: 'koeln-juelich-b',        offset: -0.025 },
+  B3t2: { seg: 'koeln-juelich-b',        offset: -0.05 },
+  B4t1: { seg: 'muenchen-nuernberg',     offset: 0 },
+  B5t1: { seg: 'nuernberg-frankfurt',    offset: 0 },
+  B6t1: { seg: 'frankfurt-juelich-direct', offset: -0.04 },
+  B6t2: { seg: 'frankfurt-juelich-direct', offset: -0.08 },
+  C1t1: { seg: 'hamburg-koeln',            offset: 0 },
+  C1t2: { seg: 'hamburg-koeln',            offset: 0.04 },
+  C2t1: { seg: 'koeln-juelich-b',          offset: -0.075 },
+  C2t2: { seg: 'koeln-juelich-b',          offset: -0.10 },
+};
+
+function offsetCoords(coords, delta) {
+  if (!delta) return coords;
+  return coords.map(([lat, lng]) => [lat + delta * 0.5, lng + delta]);
+}
+
+const allPolylines = [];
+
+ROUTES.forEach(r => {
+  const seg = routeSegments[r.id];
+  const raw = RAIL_SEGMENTS[seg.seg];
+  const latlngs = offsetCoords(raw, seg.offset);
+  const isMaint = r.id === 'B2t2';
+  const pl = L.polyline(latlngs, {
+    color: r.color,
+    weight: r.dash ? 2 : 3.5,
+    opacity: isMaint ? 0.5 : 0.8,
+    dashArray: isMaint ? '3 5' : r.dash ? '9 5' : null,
+  }).addTo(map);
+  allPolylines.push(pl);
+  pl.on('click', () => showInfo({
+    type: isMaint ? 'Edge / Variable — BLOCKED' : 'Edge / Variable',
+    title: `${r.id}: ${r.label}`,
+    vars: [r.id],
+    cost: r.cost + ' min',
+    costLabel: 'Base travel time',
+    detail: r.detail,
+    color: r.color,
+  }));
+  pl.on('mouseover', () => pl.setStyle({ weight: r.dash ? 3 : 5, opacity: 1 }));
+  pl.on('mouseout',  () => pl.setStyle({ weight: r.dash ? 2 : 3.5, opacity: isMaint ? 0.5 : 0.8 }));
+});
+
+Object.entries(CITIES).forEach(([id, c]) => {
+  const isBottle = id === 'koeln';
+  const isPlatform = false;
+  const isGoal   = id === 'juelich';
+  const radius   = isBottle || isGoal ? 12 : isPlatform ? 10 : 9;
+  const strokeCol = isBottle ? '#f5b731' : isGoal ? '#fff' : 'rgba(255,255,255,0.6)';
+
+  const m = L.circleMarker(c.ll, {
+    radius, fillColor: c.color, color: strokeCol,
+    weight: (isBottle || isGoal) ? 2.5 : 1.5, fillOpacity: 0.95,
+  }).addTo(map);
+
+  m.on('click', () => showInfo({
+    type: isBottle ? 'Bottleneck (k=1)' : isPlatform ? 'Platform cap (k=2)' : isGoal ? 'Destination' : 'Station',
+    title: c.name, vars: c.vars, cost: undefined,
+    detail: `${c.role} — ${c.detail}`, color: c.color,
+  }));
+  m.on('mouseover', () => m.setStyle({ radius: radius + 3 }));
+  m.on('mouseout',  () => m.setStyle({ radius }));
+
+  L.tooltip({ permanent:true, direction: id==='koeln'?'left':'right', offset:[10,0], className:'leaflet-tooltip' })
+    .setContent(`<b>${c.name}</b>`).setLatLng(c.ll).addTo(map);
+});
+
+/* ══════════════════════════════════════════════════════════
+   Q-MATRIX (18 × 18)
+
+   Index → variable:
+    0  A1t1   1  A1t2   2  A3t1   3  A3t2
+    4  A2t1   5  A2t2   6  A4t1   7  A4t2
+    8  B1t1   9  B1t2  10  B2t1  11  B2t2(blocked)
+   12  B3t1  13  B3t2  14  B4t1  15  B5t1
+   16  B6t1  17  B6t2
+
+   OFF-DIAGONAL ENTRIES by constraint:
+   FLOW (purple) — path continuity pairs:
+     (0,4)A1t1→A2t1  (1,5)A1t2→A2t2
+     (2,6)A3t1→A4t1  (3,7)A3t2→A4t2
+     (8,10)B1t1→B2t1 (9,11)B1t2→B2t2
+     (10,12)B2t1→B3t1 (11,13)B2t2→B3t2
+     (8,16)B1t1→B6t1  (9,17)B1t2→B6t2
+     (14,15)B4t1→B5t1 (15,16)B5t1→B6t1
+
+   EXCL (purple) — route alternatives (same train, same slot group):
+     (0,1) A1 t1/t2    (2,3) A3 t1/t2
+     (0,2)(0,3)(1,2)(1,3) A1 vs A3 cross-slot
+     (8,9) B1 t1/t2    (8,14)(9,14) B1 vs B4
+     (16,17) B6 t1/t2
+
+   CAPACITY Cologne (amber) — same time slot, both arrive at CGN:
+     (0,10) A1t1 & B2t1? No — A1t1 arrives t1, B2t1 arrives t2 (different slots, ok)
+     (1,10) A1t2 & B2t1 — A1 midday vs B2 midday → CONFLICT (amber)
+     (5,12) A2t2 & B3t1 — both at CGN? No, these are departures from CGN
+     Actually: CGN arrivals: A1t1(0), A1t2(1), B2t1(10), B2t2(11)
+     Same-slot conflicts: (1,10) both midday
+
+   PLATFORM Frankfurt (amber) — same slot, all arrivals at FRA (cap 2):
+     FRA arrivals: A3t1(2), A3t2(3), B1t1(8), B1t2(9), B5t1(15)
+     Same-slot pairs (t1): (2,8),(2,15),(8,15)
+     Same-slot pairs (t2): (3,9)
+
+   MAINT block (coral) — B2t2=11 coupled with everything (penalty = ∞ on diagonal):
+     x_B2t2 must = 0, diagonal entry huge, plus cross-term with B1t2(9) which routes into it
+
+   TIME WINDOW (coral) — soft penalty pairs (late/early arrivals coupled):
+     Late arrivals: A2t1(4), A4t2(7), B3t2(13), B6t2(17)
+     Early: A2t1(4)
+     These get extra diagonal weight but also cross with other soft vars
+
+   CREW (coral) — Nuremberg path: B4t1(14)+B5t1(15)+B6t1(16) total > limit if combined wrong
+     Cross-term (14,15) already in flow; crew adds weight to (14,16),(15,16)
+   ══════════════════════════════════════════════════════════ */
+
+const N = 22;
+const labels = [
+  'A1·t1','A1·t2','A3·t1','A3·t2',   // 0–3
+  'A2·t1','A2·t2','A4·t1','A4·t2',   // 4–7
+  'B1·t1','B1·t2','B2·t1','B2·t2',   // 8–11
+  'B3·t1','B3·t2','B4·t1','B5·t1',   // 12–15
+  'B6·t1','B6·t2',                    // 16–17
+  'C1·t1','C1·t2','C2·t1','C2·t2',   // 18–21
+];
+
+const flowPairs = new Set([
+  // Train A — linear chain
+  '0,4',   // A1t1 → A2t1
+  '1,5',   // A1t2 → A2t2
+  '2,6',   // A3t1 → A4t1
+  '3,7',   // A3t2 → A4t2
+  // Train B via Nuremberg
+  '14,15', // B4t1 → B5t1
+  '15,16', // B5t1 → B6t1
+  // Train B at Cologne
+  '10,12', // B2t1 → B3t1
+  '11,13', // B2t2 → B3t2
+  // Train C — linear chain Hamburg→Cologne→Jülich
+  '18,20', // C1t1 → C2t1
+  '19,21', // C1t2 → C2t2
+]);
+
+// Frankfurt branching for Train B (unchanged)
+const frankfurtFlowPairs = new Set([
+  '8,10',  // B1t1 ↔ B2t1  (-2)
+  '8,16',  // B1t1 ↔ B6t1  (-2)
+  '9,11',  // B1t2 ↔ B2t2  (-2)
+  '9,17',  // B1t2 ↔ B6t2  (-2)
+]);
+const frankfurtExclPairs = new Set([
+  '10,16', // B2t1 and B6t1 both active → impossible
+  '11,17', // B2t2 and B6t2 both active → impossible
+]);
+
+const exclPairs = new Set([
+  // Train A: exactly one departure
+  '0,1',         // A1t1 vs A1t2
+  '2,3',         // A3t1 vs A3t2
+  '0,2','0,3',   // A1 vs A3 cross-slot
+  '1,2','1,3',
+  // Train B: exactly one departure
+  '8,9',         // B1t1 vs B1t2
+  '8,14',        // B1t1 vs B4t1
+  '9,14',        // B1t2 vs B4t1
+  '16,17',       // B6t1 vs B6t2
+  // Train C: exactly one departure
+  '18,19',       // C1t1 vs C1t2
+]);
+
+// Cologne bottleneck k=1 — QUADRATIC pairs (degree-2 terms)
+// All three conflict at 15:30: A1t2(1), B2t1(10), C1t2(19)
+// The full cubic term x1·x10·x19 goes in T (HUBO tensor)
+// The quadratic parts of (x1+x10+x19-1)² still give pairwise +2λ:
+const capCGN = new Set([
+  '1,10',  // A1t2 & B2t1
+  '1,19',  // A1t2 & C1t2
+  '10,19', // B2t1 & C1t2
+]);
+
+// Cubic Cologne term: T[1][10][19] = +6λ (from expansion of (x+y+z-1)²)
+// This is the HUBO term — stored separately, shown in the interface
+const huboTerms = [
+  { indices:[1,10,19], coeff: 6, label:'Cologne k=1 cubic', color:'#f5b731' },
+];
+
+const softPairs = new Set([
+  '14,16', // Crew: B4t1 + B6t1 Nuremberg detour soft penalty
+]);
+
+
+/* ── Solution overlay ── */
+// x*: A1t2(1)+A2t2(5), B4t1(14)+B5t1(15)+B6t1(16), C1t1(18)+C2t1(20)
+const X_OPT = [0,1,0,0, 0,1,0,0, 0,0,0,0, 0,0,1,1,1,0, 1,0,1,0];
+
+// Build x-vector bit display
+const bitsEl = document.getElementById('sol-xbits');
+X_OPT.forEach((v, i) => {
+  const bit = document.createElement('div');
+  bit.className = 'sol-bit ' + (v ? 'on' : 'off');
+  bit.innerHTML = `${v}<div class="sol-bit-label">${labels[i]}</div>`;
+  bitsEl.appendChild(bit);
+});
+
+let solVisible = false;
+let solPolylines = [];
+
+function showSolution() {
+  if (solVisible) { hideSolution(); return; }
+  solVisible = true;
+  document.getElementById('sol-overlay').style.display = 'block';
+  document.getElementById('sol-btn').textContent = '✕ Hide Solution';
+  document.getElementById('sol-btn').style.background = 'var(--coral)';
+
+  allPolylines.forEach(pl => pl.setStyle({ opacity: 0.1 }));
+
+  const solSegs = [
+    { coords: offsetCoords(RAIL_SEGMENTS['zuerich-koeln'],            0.04),  color:'#ffffff' },
+    { coords: offsetCoords(RAIL_SEGMENTS['koeln-juelich'],            0.025), color:'#ffffff' },
+    { coords: RAIL_SEGMENTS['muenchen-nuernberg'],                             color:'#4a7fff' },
+    { coords: RAIL_SEGMENTS['nuernberg-frankfurt'],                            color:'#4a7fff' },
+    { coords: offsetCoords(RAIL_SEGMENTS['frankfurt-juelich-direct'], -0.04), color:'#4a7fff' },
+    { coords: RAIL_SEGMENTS['hamburg-koeln'],                                  color:'#e05cff' },
+    { coords: offsetCoords(RAIL_SEGMENTS['koeln-juelich-b'],         -0.075), color:'#e05cff' },
+  ];
+  solSegs.forEach(s => {
+    const pl = L.polyline(s.coords, { color: s.color, weight: 5, opacity: 1 }).addTo(map);
+    solPolylines.push(pl);
+  });
+}
+
+function hideSolution() {
+  solVisible = false;
+  document.getElementById('sol-overlay').style.display = 'none';
+  document.getElementById('sol-btn').textContent = '▶ Show Optimal Solution';
+  document.getElementById('sol-btn').style.background = 'var(--teal)';
+  allPolylines.forEach(pl => pl.setStyle({ opacity: 0.8 }));
+  solPolylines.forEach(pl => map.removeLayer(pl));
+  solPolylines = [];
+}
+</script>
+</body>
+</html>
