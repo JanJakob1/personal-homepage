@@ -2,7 +2,7 @@
   command = "hugo --gc --minify -b $URL && npx pagefind --source 'public'"
   publish = "public"
 
-# Ensure /qubo/ and /hubo/ serve index.html (static subdirs)
+# Ensure static subdirs serve index.html
 [[redirects]]
   from = "/qubo/"
   to = "/qubo/index.html"
@@ -11,6 +11,11 @@
 [[redirects]]
   from = "/hubo/"
   to = "/hubo/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/two_mode_rpm_displacements/"
+  to = "/two_mode_rpm_displacements/index.html"
   status = 200
   force = true
 
