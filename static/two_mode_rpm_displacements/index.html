@@ -21,8 +21,8 @@
   *{box-sizing:border-box} html,body{margin:0}
   body{ font-family:var(--sans); color:var(--ink); background:#FFFFFF;
     -webkit-font-smoothing:antialiased; line-height:1.5; min-height:100vh; }
-  .wrap{max-width:920px; margin:0 auto; padding:clamp(20px,4vw,52px) clamp(16px,4vw,32px) 64px;}
-  .sheet{ background:color-mix(in srgb, var(--paper-2) 92%, transparent); border:0.5px solid var(--border-2); border-radius:14px; padding:clamp(20px,3.5vw,40px); box-shadow:0 1px 0 color-mix(in srgb, var(--ink) 6%, transparent), 0 24px 48px -32px rgba(0,0,0,0.45); backdrop-filter:blur(2px); }
+  .wrap{max-width:1800px; margin:0 auto; padding:4px clamp(16px,4vw,32px) 64px;}
+  .sheet{ background:color-mix(in srgb, var(--paper-2) 92%, transparent); border:0.5px solid var(--border-2); border-radius:14px; padding:8px clamp(20px,3.5vw,40px) clamp(20px,3.5vw,40px); box-shadow:0 1px 0 color-mix(in srgb, var(--ink) 6%, transparent), 0 24px 48px -32px rgba(0,0,0,0.45); backdrop-filter:blur(2px); }
   .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); font-weight:600; margin:0 0 12px;}
   h1{font-family:var(--serif); font-weight:600; font-size:clamp(24px,4.2vw,38px); line-height:1.08; margin:0 0 10px; letter-spacing:-.01em;}
   .lede{font-size:15px; color:var(--ink-soft); max-width:66ch; margin:0;}
@@ -59,6 +59,7 @@
 <body>
 <div class="wrap">
   <div class="sheet">
+    <div class="content" style="max-width:800px; margin:0 auto;">
     <div style="display:flex;flex-wrap:wrap;gap:16px 22px;align-items:flex-end;">
       <div class="grp">
         <span class="lbl" style="white-space:nowrap;">Measurement configurations K = <span id="oK" style="color:var(--ink);font-weight:600;">60</span></span>
@@ -102,6 +103,7 @@
     </div>
     <p class="fid" id="fid"></p>
     <!-- =================== END WIDGET =================== -->
+    </div>
   </div>
 </div>
 
